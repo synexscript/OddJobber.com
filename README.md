@@ -605,7 +605,6 @@
         <div class="price-tag">₹999</div>
         <button class="buy-btn" onclick="openOrderModal('Buy A Website at', '499')">BUY NOW</button>
       </div>
-    </div>
   </section>
 
   <section id="testimonials" class="testimonials" data-aos="fade-up" data-aos-duration="1500">
