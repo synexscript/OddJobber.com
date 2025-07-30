@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -7,7 +7,7 @@
   <meta name="description" content="India's Best Script Writing Agency for YouTubers, Gamers, and Content Creators." />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet"/>
   <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
   <style>
@@ -89,50 +89,96 @@
       max-width: 600px;
       color: #ccc;
     }
-    section { padding: 100px 50px; text-align: center; }
-    .cards {
+    section { 
+      padding: 100px 50px; 
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      margin-bottom: 50px;
+      background: linear-gradient(90deg, #00f2ff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: #ccc;
+      margin-bottom: 30px;
+    }
+    .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(280px,1fr));
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
       gap: 30px;
       margin-top: 50px;
-      transition: opacity 0.4s ease;
     }
-    $1
-.card:hover {
-  animation: glow-bounce 1s ease forwards;
-}
-    .card:hover { transform: scale(1.05); }
-    .card h3 { color: #00f2ff; }
-    .card p {
-      color: #ccc;
-      min-height: 100px;
+    .pricing-card {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 30px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .pricing-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
+      border: 1px solid #00f2ff;
+    }
+    .pricing-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+      color: #00f2ff;
+    }
+    .pricing-features {
+      list-style: none;
       margin: 20px 0;
+      text-align: left;
     }
-    input[type="text"] {
-      padding: 8px;
-      border: none;
-      border-radius: 10px;
+    .pricing-features li {
       margin-bottom: 10px;
+      position: relative;
+      padding-left: 25px;
+      color: #ccc;
     }
-    .card a, .card button {
+    .pricing-features li:before {
+      content: "✓";
+      color: #00f2ff;
+      position: absolute;
+      left: 0;
+    }
+    .price-tag {
+      font-size: 2.5rem;
+      font-weight: 900;
+      margin: 20px 0;
+      background: linear-gradient(90deg, #00f2ff, #ff00ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .buy-btn {
       display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
+      padding: 12px 30px;
       background: linear-gradient(90deg,#00f2ff,#ff00ff);
       color: white;
       text-decoration: none;
       border: none;
       border-radius: 30px;
-      box-shadow: 0 0 10px #00f2ff;
-      transition: 0.3s;
+      font-weight: 600;
       cursor: pointer;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 200px;
     }
-    .card a:hover, .card button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 0 20px #00f2ff;
+    .buy-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
     }
     .testimonials, .portfolio {
       background: #121212;
+      border-radius: 20px;
+      margin: 50px auto;
     }
     .testimonial-card, .portfolio-item {
       background: rgba(255,255,255,0.05);
@@ -163,26 +209,78 @@
     @media(max-width:768px) {
       .hero h1 { font-size: 2.5rem; }
       header { flex-direction: column; gap: 10px; }
+      .section-title { font-size: 2rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
     }
-  #main-header {
-  transition: top 0.4s ease-in-out;
-  top: 10px;
-}
-@keyframes glow-bounce {
-  0% {
-    box-shadow: 0 0 0px #00f2ff;
-    transform: scale(1);
-  }
-  50% {
-    box-shadow: 0 0 20px #00f2ff;
-    transform: scale(1.05);
-  }
-  100% {
-    box-shadow: 0 0 10px #00f2ff;
-    transform: scale(1);
-  }
-}
-</style>
+    #main-header {
+      transition: top 0.4s ease-in-out;
+      top: 10px;
+    }
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 99999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background-color: #121212;
+      margin: 15% auto;
+      padding: 30px;
+      border: 1px solid #00f2ff;
+      border-radius: 20px;
+      width: 80%;
+      max-width: 500px;
+      position: relative;
+    }
+    .close {
+      color: #aaa;
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #00f2ff;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #00f2ff;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid #333;
+      background: #222;
+      color: white;
+    }
+    .submit-btn {
+      background: linear-gradient(90deg,#00f2ff,#ff00ff);
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    .submit-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+    }
+  </style>
 </head>
 <body>
   <video class="bg-video" autoplay muted loop>
@@ -196,50 +294,325 @@
     </a>
   </div>
 
+  <!-- The Modal -->
+  <div id="orderModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2 style="margin-bottom: 20px; color: #00f2ff;">Complete Your Order</h2>
+      <form id="orderForm">
+        <input type="hidden" id="selectedPlan">
+        <input type="hidden" id="selectedPrice">
+        <div class="form-group">
+          <label for="userName">Your Name</label>
+          <input type="text" id="userName" required placeholder="Enter your full name">
+        </div>
+        <div class="form-group">
+          <label for="userEmail">Email (Optional)</label>
+          <input type="text" id="userEmail" placeholder="Enter your email">
+        </div>
+        <div class="form-group">
+          <label for="userPhone">WhatsApp Number</label>
+          <input type="text" id="userPhone" required placeholder="Enter your WhatsApp number">
+        </div>
+        <button type="submit" class="submit-btn">PROCEED TO WHATSAPP</button>
+      </form>
+    </div>
+  </div>
+
   <header id="main-header">
     <div class="logo" id="synex-logo">SYNEX</div>
     <nav>
       <a href="#">Home</a>
-      <a href="#pricing">Pricing</a>
-      <a href="#testimonials">Reviews</a>
-      <a href="#portfolio">Portfolio</a>
+      <a href="#youtube-hooks">YouTube Hooks</a>
+      <a href="#reels-shorts">Reels & Youtube Shorts</a>
+      <a href="#long-videos">Long Videos</a>
+      <a href="#brand-ads">Brand Ads</a>
     </nav>
     <div class="toggle" onclick="toggleTheme()">Toggle</div>
   </header>
 
   <section class="hero" data-aos="fade-up" data-aos-duration="1500">
-    <h1 data-tilt>Welcome to Synex</h1>
-    <p data-tilt>India's Best Script Writing for Gamers & Creators</p>
+    <h1 data-tilt>Professional Scripts for Creators</h1>
+    <p data-tilt>Elevate your content with our expertly crafted scripts</p>
   </section>
 
-  <section id="pricing" data-aos="fade-up" data-aos-duration="1500">
-    <h2>Pricing & Buy</h2>
-    <div class="cards">
-  <div class="card" data-aos="zoom-in-up" data-aos-duration="1000" data-aos-delay="100" data-tilt><h3>₹49 - Caption Pro</h3><p>Hooks & captions for reels & shorts.</p><input id="name49" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Caption Pro', '49', 'name49')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹99 - Reel Script</h3><p>Short-form skits & trending reels.</p><input id="name99" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Reel Script', '99', 'name99')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹149 - YT Shorts</h3><p>Punchy YouTube Shorts scripting.</p><input id="name149" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('YT Shorts', '149', 'name149')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹199 - Gaming Roast</h3><p>Funny roast script with memes.</p><input id="name199" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Gaming Roast', '199', 'name199')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹249 - Reaction Script</h3><p>Engaging scripts for reaction content.</p><input id="name249" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Reaction Script', '249', 'name249')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹299 - Full YT Video</h3><p>Complete script from intro to outro.</p><input id="name299" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Full YT Video', '299', 'name299')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹349 - Cinematic Story</h3><p>Storytelling scripts for cinematic content.</p><input id="name349" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Cinematic Story', '349', 'name349')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹399 - Gaming Storyline</h3><p>Immersive lore for games & characters.</p><input id="name399" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Gaming Storyline', '399', 'name399')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹449 - Brand Script</h3><p>Ad & promo script for brand videos.</p><input id="name449" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Brand Script', '449', 'name449')">Pay Now</button></div>
-  <div class="card" data-aos="fade-up" data-tilt><h3>₹499 - Ultimate Series</h3><p>Long-form series script with episodes.</p><input id="name499" type="text" placeholder="Enter Your Name"><br><button onclick="redirectToWhatsApp('Ultimate Series', '499', 'name499')">Pay Now</button></div>
-</div>
-</section>
+  <!-- YouTube Hooks Section -->
+  <section id="youtube-hooks" class="pricing-section" data-aos="fade-up">
+    <h2 class="section-title">YOUTUBE CHANNEL HOOKS</h2>
+    <p class="section-subtitle">5-second attention grabbers to boost your CTR</p>
+    
+    <div class="pricing-grid">
+      <div class="pricing-card" data-aos="zoom-in">
+        <h3>5-second Hook</h3>
+        <ul class="pricing-features">
+          <li>15 SEC HOOK SCRIPT</li>
+          <li>Hooks viewers instantly</li>
+          <li>Attention in first 3 seconds</li>
+          <li>Perfect for any niche</li>
+        </ul>
+        <div class="price-tag">₹11</div>
+        <button class="buy-btn" onclick="openOrderModal('5-second Hook', '99')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Hook Pack</h3>
+        <ul class="pricing-features">
+          <li>5 unique hooks</li>
+          <li>Variations for different videos</li>
+          <li>Tested formulas</li>
+          <li>High retention guaranteed</li>
+        </ul>
+        <div class="price-tag">₹49</div>
+        <button class="buy-btn" onclick="openOrderModal('Hook Pack', '299')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Premium Hooks</h3>
+        <ul class="pricing-features">
+          <li>10 premium hooks</li>
+          <li> 15 SECONDS EACH </li>
+          <li>Storytelling hooks</li>
+          <li>Curiosity gap techniques</li>
+        </ul>
+        <div class="price-tag">₹99</div>
+        <button class="buy-btn" onclick="openOrderModal('Premium Hook Series', '499')">BUY NOW</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reels & Youtube Shorts Section -->
+  <section id="reels-shorts" class="pricing-section test" data-aos="fade-up">
+    <h2 class="section-title">REELS & SHORTS SCRIPTS</h2>
+    <p class="section-subtitle">Viral-ready scripts for short-form content</p>
+    
+    <div class="pricing-grid">
+      <div class="pricing-card" data-aos="zoom-in">
+        <h3>Quick Shot</h3>
+        <ul class="pricing-features">
+          <li>45 second script</li>
+          <li>Trending concept</li>
+          <li>High shareability</li>
+          <li>Simple execution</li>
+          <li>Any Niech</li>
+        </ul>
+        <div class="price-tag">₹149</div>
+        <button class="buy-btn" onclick="openOrderModal('Quick Shot', '149')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Engage Mini</h3>
+        <ul class="pricing-features">
+          <li>60 second script</li>
+          <li>Story arc included</li>
+          <li>2 emotional triggers</li>
+          <li>Call-to-action</li>
+          <li> Mainly-For-Episodes </li>
+        </ul>
+        <div class="price-tag">₹199</div>
+        <button class="buy-btn" onclick="openOrderModal('Engage Mini', '199')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Dual Boost</h3>
+        <ul class="pricing-features">
+          <li>2 viral hooks</li>
+          <li>90 second script</li>
+          <li>Multi-platform ready</li>
+          <li>Trend analysis</li>
+          <li> 3 Part Reels </li>
+        </ul>
+        <div class="price-tag">₹249</div>
+        <button class="buy-btn" onclick="openOrderModal('Dual Boost', '249')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="300">
+        <h3>Power Series</h3>
+        <ul class="pricing-features">
+          <li>150 second script</li>
+          <li>4 part structure</li>
+          <li>Value-packed</li>
+          <li>High retention flow</li>
+        </ul>
+        <div class="price-tag">₹299</div>
+        <button class="buy-btn" onclick="openOrderModal('Power Series', '349')">BUY NOW</button>
+      </div>
+
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
+        <h3>Pro Reel Pack</h3>
+        <ul class="pricing-features">
+          <li>180 second script</li>
+          <li>6 part structure</li>
+          <li>Advanced storytelling</li>
+          <li>Multi-hook approach</li>
+        </ul>
+        <div class="price-tag">₹349</div>
+        <button class="buy-btn" onclick="openOrderModal('Pro Reel Pack', '449')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
+        <h3>Pro Reel Pack</h3>
+        <ul class="pricing-features">
+          <li> 10 Parts Structure </li>
+          <li> 30 Seconds Each </li>
+          <li>Advanced storytelling</li>
+           <li>With #tags</li>
+        </ul>
+        <div class="price-tag">₹399</div>
+        <button class="buy-btn" onclick="openOrderModal('Pro Reel Pack', '449')">BUY NOW</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Long Videos Section -->
+  <section id="long-videos" class="pricing-section" data-aos="fade-up">
+    <h2 class="section-title">YOUTUBE LONG VIDEO SCRIPTS</h2>
+    <p class="section-subtitle">Complete scripts for engaging long-form content</p>
+    
+    <div class="pricing-grid">
+      <div class="pricing-card" data-aos="zoom-in">
+        <h3>Basic</h3>
+        <ul class="pricing-features">
+          <li>3 minute script</li>
+          <li>Clear structure</li>
+          <li>1 main point</li>
+          <li>Simple CTA</li>
+        </ul>
+        <div class="price-tag">₹49</div>
+        <button class="buy-btn" onclick="openOrderModal('Basic Long Video', '299')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
+        <h3>Starter Plus</h3>
+        <ul class="pricing-features">
+          <li>4 minute script</li>
+          <li>2 main points</li>
+          <li>Transition phrases</li>
+          <li>Basic storytelling</li>
+        </ul>
+        <div class="price-tag">₹79</div>
+        <button class="buy-btn" onclick="openOrderModal('Starter Plus Long Video', '399')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Advanced</h3>
+        <ul class="pricing-features">
+          <li>6 minute script</li>
+          <li>3 main points</li>
+          <li>Engaging hooks</li>
+          <li>Visual descriptions</li>
+        </ul>
+        <div class="price-tag">₹99</div>
+        <button class="buy-btn" onclick="openOrderModal('Advanced Long Video', '499')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="300">
+        <h3>Value Pack</h3>
+        <ul class="pricing-features">
+          <li>8.5 minute script</li>
+          <li>Comprehensive content</li>
+          <li>Multiple CTAs</li>
+          <li>Audience engagement</li>
+        </ul>
+        <div class="price-tag">₹129</div>
+        <button class="buy-btn" onclick="openOrderModal('Value Pack Long Video', '599')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
+        <h3>Pro</h3>
+        <ul class="pricing-features">
+          <li>10 minute script</li>
+          <li>Professional structure</li>
+          <li>Multiple hooks</li>
+          <li>SEO optimized</li>
+        </ul>
+        <div class="price-tag">₹179</div>
+        <button class="buy-btn" onclick="openOrderModal('Pro Long Video', '699')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="500">
+        <h3>Pro Plus</h3>
+        <ul class="pricing-features">
+          <li>15 minute script</li>
+          <li>In-depth content</li>
+          <li>Storytelling elements</li>
+          <li>Multiple segments</li>
+        </ul>
+        <div class="price-tag">₹249</div>
+        <button class="buy-btn" onclick="openOrderModal('Pro Plus Long Video', '899')">BUY NOW</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Brand Ads Section -->
+  <section id="brand-ads" class="pricing-section" data-aos="fade-up">
+    <h2 class="section-title">BRANDED AD SCRIPTS</h2>
+    <p class="section-subtitle">Professional scripts for brand promotions</p>
+    
+    <div class="pricing-grid">
+      <div class="pricing-card" data-aos="zoom-in">
+        <h3>45-sec Brand Ad</h3>
+        <ul class="pricing-features">
+          <li>Hook + Benefits + CTA</li>
+          <li>Emotional appeal</li>
+          <li>Brand messaging</li>
+          <li>Clear conversion path</li>
+        </ul>
+        <div class="price-tag">₹299</div>
+        <button class="buy-btn" onclick="openOrderModal('45-sec Brand Ad', '299')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
+        <h3>60-sec Story Ad</h3>
+        <ul class="pricing-features">
+          <li>Mini-story format</li>
+          <li>Problem-solution</li>
+          <li>Emotional journey</li>
+          <li>Strong CTA</li>
+        </ul>
+        <div class="price-tag">₹399</div>
+        <button class="buy-btn" onclick="openOrderModal('60-sec Story Ad', '399')">BUY NOW</button>
+      </div>
+      
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Product Demo</h3>
+        <ul class="pricing-features">
+          <li>Feature highlights</li>
+          <li>Benefits showcase</li>
+          <li>Comparison points</li>
+          <li>Urgency creation</li>
+        </ul>
+        <div class="price-tag">₹499</div>
+        <button class="buy-btn" onclick="openOrderModal('Product Demo Ad', '499')">BUY NOW</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Buy Website  -->
+  <section id="buy-website" class="pricing-section" data-aos="fade-up">
+    <h2 class="section-title">Buy Website</h2>
+    <p class="section-subtitle">Buy a website like synex</p>
+
+      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
+        <h3>Buy Website</h3>
+        <ul class="pricing-features">
+          <li>Manual Control</li>
+          <li>Whatsapp Based</li>
+          <li>No Database</li>
+          <li>Easy To Access</li>
+          <li>Smooth UI</li>
+          <li>Only HTML</li>
+        </ul>
+        <div class="price-tag">₹999</div>
+        <button class="buy-btn" onclick="openOrderModal('Buy A Website at', '499')">BUY NOW</button>
+      </div>
+    </div>
+  </section>
 
   <section id="testimonials" class="testimonials" data-aos="fade-up" data-aos-duration="1500">
-    <h2>Client Reviews</h2>
+    <h2 class="section-title">Client Reviews</h2>
     <div class="testimonial-card">"Amazing script quality! My videos blew up. - GamerX"</div>
     <div class="testimonial-card">"Quick, creative and on point. - CreatorY"</div>
     <div class="testimonial-card">"Affordable premium work. Highly recommend. - VloggerZ"</div>
-  </section>
-
-  <section id="portfolio" class="portfolio" data-aos="fade-up" data-aos-duration="1500">
-    <h2>Our Portfolio</h2>
-    <div class="portfolio-item">✔ Gaming Roast for GamerX</div>
-    <div class="portfolio-item">✔ Brand Ad for ABC Brand</div>
-    <div class="portfolio-item">✔ YouTube Series for CreatorZ</div>
   </section>
 
   <footer>
@@ -247,7 +620,10 @@
   </footer>
 
   <script>
+    // Initialize animations
     AOS.init();
+    
+    // Initialize particles.js
     particlesJS('particles-js', {
       particles: {
         number: { value: 80 },
@@ -265,6 +641,8 @@
         move: { enable: true, speed: 3 }
       }
     });
+    
+    // Initialize tilt effects
     VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
       max: 15,
       speed: 400,
@@ -272,30 +650,20 @@
       "max-glare": 0.5
     });
 
+    // Header scroll effect
     let lastScrollTop = 0;
-window.addEventListener('scroll', function () {
-  const header = document.getElementById('main-header');
-  let currentScrollTop = window.scrollY;
-  if (currentScrollTop > lastScrollTop) {
-    header.style.top = '-120px'; // hide when scrolling down
-  } else {
-    header.style.top = '10px'; // show when scrolling up
-  }
-  lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
-      const logo = document.getElementById('synex-logo');
-      const cardsSection = document.querySelector('.cards');
-      const rect = cardsSection.getBoundingClientRect();
-      const middle = window.innerHeight / 2;
-
-      if (rect.top < middle && rect.bottom > middle) {
-        cardsSection.style.opacity = '1';
-        logo.style.opacity = '1';
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('main-header');
+      let currentScrollTop = window.scrollY;
+      if (currentScrollTop > lastScrollTop) {
+        header.style.top = '-120px'; // hide when scrolling down
       } else {
-        cardsSection.style.opacity = '0.4';
-        logo.style.opacity = '0.4';
+        header.style.top = '10px'; // show when scrolling up
       }
+      lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
     });
 
+    // Theme toggle
     function toggleTheme() {
       document.body.classList.toggle('light');
       if (document.body.classList.contains('light')) {
@@ -307,22 +675,62 @@ window.addEventListener('scroll', function () {
       }
     }
 
-    function redirectToWhatsApp(plan, price, inputId) {
-  let message = '';
-  const inputElement = document.getElementById(inputId);
-  if (inputElement) {
-    const name = inputElement.value.trim();
-    if (name === "") {
-      alert("Please enter your name.");
-      return;
+    // Modal functionality
+    const modal = document.getElementById("orderModal");
+    const span = document.getElementsByClassName("close")[0];
+    
+    // Open modal function
+    function openOrderModal(plan, price) {
+      document.getElementById("selectedPlan").value = plan;
+      document.getElementById("selectedPrice").value = price;
+      modal.style.display = "block";
     }
-    message = `Hello, my name is ${name}. I would like to purchase the ${plan} Plan for ₹${price}. Please proceed.`;
-  } else {
-    message = `Hi, I'm interested in the ${plan} Plan for ₹${price}. Please proceed.`;
-  }
-  const url = "https://wa.me/918618365136?text=" + encodeURIComponent(message);
-  window.open(url, '_blank');
+    
+    // Close modal when clicking X
+    span.onclick = function() {
+      modal.style.display = "none";
     }
+    
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+    
+    // Form submission
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const plan = document.getElementById("selectedPlan").value;
+      const price = document.getElementById("selectedPrice").value;
+      const name = document.getElementById("userName").value;
+      const phone = document.getElementById("userPhone").value;
+      const email = document.getElementById("userEmail").value;
+      
+      // Validate phone number
+      if (!phone.match(/^[0-9]{10}$/)) {
+        alert("Please enter a valid 10-digit phone number");
+        return;
+      }
+      
+      // Create WhatsApp message
+      let message = `Hello Synex Team!%0A%0A`;
+      message += `I want to order: *${plan} (₹${price})*%0A`;
+      message += `Name: *${name}*%0A`;
+      message += `Phone: *${phone}*%0A`;
+      if (email) message += `Email: *${email}*%0A`;
+      message += `%0APlease confirm my order and provide payment details.`;
+      
+      // Open WhatsApp
+      window.open(`https://wa.me/918618365136?text=${message}`, '_blank');
+      
+      // Close modal
+      modal.style.display = "none";
+      
+      // Reset form
+      document.getElementById("orderForm").reset();
+    });
   </script>
 </body>
 </html>
