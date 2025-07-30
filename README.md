@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -351,7 +350,7 @@
           <li>Perfect for any niche</li>
         </ul>
         <div class="price-tag">₹11</div>
-        <button class="buy-btn" onclick="openOrderModal('5-second Hook', '99')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('5-second Hook', '11')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
@@ -363,7 +362,7 @@
           <li>High retention guaranteed</li>
         </ul>
         <div class="price-tag">₹49</div>
-        <button class="buy-btn" onclick="openOrderModal('Hook Pack', '299')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Hook Pack', '49')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
@@ -375,7 +374,7 @@
           <li>Curiosity gap techniques</li>
         </ul>
         <div class="price-tag">₹99</div>
-        <button class="buy-btn" onclick="openOrderModal('Premium Hook Series', '499')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Premium Hook Series', '99')">BUY NOW</button>
       </div>
     </div>
   </section>
@@ -450,7 +449,7 @@
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
-        <h3>Pro Reel Pack</h3>
+        <h3>Elite Reel Pack</h3>
         <ul class="pricing-features">
           <li> 10 Parts Structure </li>
           <li> 30 Seconds Each </li>
@@ -458,7 +457,7 @@
            <li>With #tags</li>
         </ul>
         <div class="price-tag">₹399</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Reel Pack', '449')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Pro Reel Pack', '399')">BUY NOW</button>
       </div>
     </div>
   </section>
@@ -478,7 +477,7 @@
           <li>Simple CTA</li>
         </ul>
         <div class="price-tag">₹49</div>
-        <button class="buy-btn" onclick="openOrderModal('Basic Long Video', '299')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Basic Long Video', '49')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
@@ -490,7 +489,7 @@
           <li>Basic storytelling</li>
         </ul>
         <div class="price-tag">₹79</div>
-        <button class="buy-btn" onclick="openOrderModal('Starter Plus Long Video', '399')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Starter Plus Long Video', '79')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
@@ -502,7 +501,7 @@
           <li>Visual descriptions</li>
         </ul>
         <div class="price-tag">₹99</div>
-        <button class="buy-btn" onclick="openOrderModal('Advanced Long Video', '499')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Advanced Long Video', '99')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="300">
@@ -514,7 +513,7 @@
           <li>Audience engagement</li>
         </ul>
         <div class="price-tag">₹129</div>
-        <button class="buy-btn" onclick="openOrderModal('Value Pack Long Video', '599')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Value Pack Long Video', '129')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
@@ -526,7 +525,7 @@
           <li>SEO optimized</li>
         </ul>
         <div class="price-tag">₹179</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Long Video', '699')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Pro Long Video', '179')">BUY NOW</button>
       </div>
       
       <div class="pricing-card" data-aos="zoom-in" data-aos-delay="500">
@@ -538,7 +537,7 @@
           <li>Multiple segments</li>
         </ul>
         <div class="price-tag">₹249</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Plus Long Video', '899')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Pro Plus Long Video', '249')">BUY NOW</button>
       </div>
     </div>
   </section>
@@ -603,8 +602,9 @@
           <li>Only HTML</li>
         </ul>
         <div class="price-tag">₹999</div>
-        <button class="buy-btn" onclick="openOrderModal('Buy A Website at', '499')">BUY NOW</button>
+        <button class="buy-btn" onclick="openOrderModal('Buy A Website at', '999')">BUY NOW</button>
       </div>
+    </div>
   </section>
 
   <section id="testimonials" class="testimonials" data-aos="fade-up" data-aos-duration="1500">
