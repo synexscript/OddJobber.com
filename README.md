@@ -1,4 +1,4 @@
-<html lang="en">
+8<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -604,7 +604,6 @@
         <div class="price-tag">₹999</div>
         <button class="buy-btn" onclick="openOrderModal('Buy A Website at', '999')">BUY NOW</button>
       </div>
-    </div>
   </section>
 
   <section id="testimonials" class="testimonials" data-aos="fade-up" data-aos-duration="1500">
