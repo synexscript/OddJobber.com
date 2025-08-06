@@ -306,8 +306,8 @@
           <input type="text" id="userName" required placeholder="Enter your full name">
         </div>
         <div class="form-group">
-          <label for="userEmail">Email (Optional)</label>
-          <input type="text" id="userEmail" placeholder="Enter your email">
+          <label for="userEmail">Topic for yout topic(compalsary in 100 words)</label>
+          <input type="text" id="topic" placeholder="Enter your topic">
         </div>
         <div class="form-group">
           <label for="userPhone">WhatsApp Number</label>
