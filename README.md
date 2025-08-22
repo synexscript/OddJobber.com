@@ -1,734 +1,691 @@
-8<html lang="en">
+
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Synex - Script Writing Agency</title>
-  <meta name="description" content="India's Best Script Writing Agency for YouTubers, Gamers, and Content Creators." />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;900&display=swap" rel="stylesheet"/>
-  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.0/vanilla-tilt.min.js"></script>
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      background: #0f0f0f;
-      color: white;
-      font-family: 'Poppins', sans-serif;
-      overflow-x: hidden;
-    }
-    video.bg-video {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      z-index: -10;
-      opacity: 0.1;
-    }
-    header {
-      transition: opacity 0.5s ease;
-      position: fixed;
-      width: 100%;
-      z-index: 999;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 50px;
-      background: rgba(0,0,0,0.4);
-      backdrop-filter: blur(20px);
-      border-radius: 20px;
-      margin: 10px;
-    }
-    .logo {
-      font-size: 2rem;
-      font-weight: 900;
-      background: linear-gradient(90deg, #00f2ff, #ff00ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 20px;
-      font-weight: 600;
-    }
-    nav a:hover { color: #00f2ff; }
-    .toggle {
-      cursor: pointer;
-      border: 2px solid white;
-      padding: 5px 10px;
-      border-radius: 30px;
-    }
-    .toggle:hover {
-      background-color: #00f2ff;
-      color: black;
-    }
-    .hero {
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 4rem;
-      background: linear-gradient(90deg,#00f2ff,#ff00ff,#00f2ff);
-      background-size: 200% auto;
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: shine 3s linear infinite;
-    }
-    @keyframes shine {
-      to { background-position: 200% center; }
-    }
-    .hero p {
-      margin-top: 20px;
-      max-width: 600px;
-      color: #ccc;
-    }
-    section { 
-      padding: 100px 50px; 
-      text-align: center;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    .section-title {
-      font-size: 2.5rem;
-      margin-bottom: 50px;
-      background: linear-gradient(90deg, #00f2ff, #ff00ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      letter-spacing: 2px;
-    }
-    .section-subtitle {
-      font-size: 1.2rem;
-      color: #ccc;
-      margin-bottom: 30px;
-    }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 30px;
-      margin-top: 50px;
-    }
-    .pricing-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 30px;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .pricing-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 10px 20px rgba(0, 242, 255, 0.2);
-      border: 1px solid #00f2ff;
-    }
-    .pricing-card h3 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-      color: #00f2ff;
-    }
-    .pricing-features {
-      list-style: none;
-      margin: 20px 0;
-      text-align: left;
-    }
-    .pricing-features li {
-      margin-bottom: 10px;
-      position: relative;
-      padding-left: 25px;
-      color: #ccc;
-    }
-    .pricing-features li:before {
-      content: "✓";
-      color: #00f2ff;
-      position: absolute;
-      left: 0;
-    }
-    .price-tag {
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin: 20px 0;
-      background: linear-gradient(90deg, #00f2ff, #ff00ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .buy-btn {
-      display: inline-block;
-      padding: 12px 30px;
-      background: linear-gradient(90deg,#00f2ff,#ff00ff);
-      color: white;
-      text-decoration: none;
-      border: none;
-      border-radius: 30px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      width: 100%;
-      max-width: 200px;
-    }
-    .buy-btn:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
-    }
-    .testimonials, .portfolio {
-      background: #121212;
-      border-radius: 20px;
-      margin: 50px auto;
-    }
-    .testimonial-card, .portfolio-item {
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 20px;
-      margin: 20px auto;
-      max-width: 600px;
-    }
-    footer {
-      padding: 30px;
-      background: #000;
-      text-align: center;
-      color: #888;
-    }
-    .floating-whatsapp {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 9999;
-    }
-    .floating-whatsapp img {
-      width: 60px;
-      transition: 0.3s;
-    }
-    .floating-whatsapp img:hover {
-      transform: scale(1.1);
-    }
-    @media(max-width:768px) {
-      .hero h1 { font-size: 2.5rem; }
-      header { flex-direction: column; gap: 10px; }
-      .section-title { font-size: 2rem; }
-      .pricing-grid { grid-template-columns: 1fr; }
-    }
-    #main-header {
-      transition: top 0.4s ease-in-out;
-      top: 10px;
-    }
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 99999;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0,0,0,0.8);
-    }
-    .modal-content {
-      background-color: #121212;
-      margin: 15% auto;
-      padding: 30px;
-      border: 1px solid #00f2ff;
-      border-radius: 20px;
-      width: 80%;
-      max-width: 500px;
-      position: relative;
-    }
-    .close {
-      color: #aaa;
-      position: absolute;
-      top: 10px;
-      right: 20px;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .close:hover {
-      color: #00f2ff;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #00f2ff;
-    }
-    .form-group input {
-      width: 100%;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid #333;
-      background: #222;
-      color: white;
-    }
-    .submit-btn {
-      background: linear-gradient(90deg,#00f2ff,#ff00ff);
-      color: white;
-      border: none;
-      padding: 12px 30px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-weight: 600;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
-    .submit-btn:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>OddJobber — Preview</title>
+<style>
+  :root{
+    --bg:#f8fafc; --card:#ffffff; --primary:#0ea5e9; --accent:#10b981; --muted:#64748b;
+    --danger:#ef4444; --glass: rgba(255,255,255,0.6);
+  }
+  *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;}
+  body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);color:#0f172a}
+  .container{max-width:1100px;margin:28px auto;padding:18px}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  h1{margin:0;font-size:20px}
+  nav{display:flex;gap:8px}
+  button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--primary);color:#fff}
+  .muted{color:var(--muted);font-size:13px}
+  .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(2,6,23,0.06);margin-top:14px}
+  .grid{display:grid;gap:12px}
+  .grid-cols-3{grid-template-columns:1fr 1fr 1fr}
+  input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef8;background:#fff}
+  .job{padding:12px;border-radius:10px;border:1px solid #eef2ff;background:linear-gradient(180deg,#fff,#fbfdff)}
+  .small{font-size:13px}
+  .actions{display:flex;gap:8px;margin-top:8px}
+  .ghost{background:transparent;border:1px solid #e6eef8;color:#0f172a}
+  .green{background:var(--accent);color:#fff}
+  .danger{background:var(--danger);color:#fff}
+  .topline{display:flex;gap:8px;align-items:center}
+  .logo{font-weight:700;color:var(--primary);font-size:18px}
+  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+  .modal{position:fixed;inset:0;background:rgba(2,6,23,0.4);display:flex;align-items:center;justify-content:center}
+  .modal .card{max-width:480px;width:96%}
+  .hidden{display:none}
+  .chip{display:inline-block;padding:6px 8px;border-radius:999px;background:#f1f5f9;font-size:12px;border:1px solid #e2e8f0}
+  .row{display:flex;gap:12px;align-items:center}
+  .spacer{flex:1}
+  .small-muted{font-size:12px;color:var(--muted)}
+  .pill{padding:6px 8px;border-radius:999px;background:#eef2ff;color:var(--primary);font-weight:600;font-size:13px}
+  .center{text-align:center}
+</style>
 </head>
 <body>
-  <video class="bg-video" autoplay muted loop>
-    <source src="https://cdn.coverr.co/videos/coverr-cloudy-sky-8170/1080p.mp4" type="video/mp4" />
-  </video>
-  <div id="particles-js"></div>
 
-  <div class="floating-whatsapp">
-    <a href="https://wa.me/918618365136?text=Hello%20Synex!%20I%20have%20a%20query." target="_blank">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" />
-    </a>
-  </div>
-
-  <!-- The Modal -->
-  <div id="orderModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2 style="margin-bottom: 20px; color: #00f2ff;">Complete Your Order</h2>
-      <form id="orderForm">
-        <input type="hidden" id="selectedPlan">
-        <input type="hidden" id="selectedPrice">
-        <div class="form-group">
-          <label for="userName">Your Name</label>
-          <input type="text" id="userName" required placeholder="Enter your full name">
-        </div>
-        <div class="form-group">
-          <label for="userEmail">Email (Optional)</label>
-          <input type="text" id="userEmail" placeholder="Enter your email">
-        </div>
-        <div class="form-group">
-          <label for="userPhone">WhatsApp Number</label>
-          <input type="text" id="userPhone" required placeholder="Enter your WhatsApp number">
-        </div>
-        <button type="submit" class="submit-btn">PROCEED TO WHATSAPP</button>
-      </form>
+<div class="container">
+  <header>
+    <div class="topline">
+      <div class="logo">OddJobber</div>
+      <div class="muted small" style="margin-left:8px">Earn from small jobs around you</div>
     </div>
-  </div>
-
-  <header id="main-header">
-    <div class="logo" id="synex-logo">SYNEX</div>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#youtube-hooks">YouTube Hooks</a>
-      <a href="#reels-shorts">Reels & Youtube Shorts</a>
-      <a href="#long-videos">Long Videos</a>
-      <a href="#brand-ads">Brand Ads</a>
-    </nav>
-    <div class="toggle" onclick="toggleTheme()">Toggle</div>
+    <nav id="nav"></nav>
   </header>
 
-  <section class="hero" data-aos="fade-up" data-aos-duration="1500">
-    <h1 data-tilt>Professional Scripts for Creators</h1>
-    <p data-tilt>Elevate your content with our expertly crafted scripts</p>
-  </section>
+  <main id="app">
+    <!-- Content injected by JS -->
+  </main>
 
-  <!-- YouTube Hooks Section -->
-  <section id="youtube-hooks" class="pricing-section" data-aos="fade-up">
-    <h2 class="section-title">YOUTUBE CHANNEL HOOKS</h2>
-    <p class="section-subtitle">5-second attention grabbers to boost your CTR</p>
-    
-    <div class="pricing-grid">
-      <div class="pricing-card" data-aos="zoom-in">
-        <h3>5-second Hook</h3>
-        <ul class="pricing-features">
-          <li>15 SEC HOOK SCRIPT</li>
-          <li>Hooks viewers instantly</li>
-          <li>Attention in first 3 seconds</li>
-          <li>Perfect for any niche</li>
-        </ul>
-        <div class="price-tag">₹11</div>
-        <button class="buy-btn" onclick="openOrderModal('5-second Hook', '11')">BUY NOW</button>
+  <footer class="muted small">This is a local demo preview. No external services are used.</footer>
+</div>
+
+<!-- Modals -->
+<div id="otpModal" class="modal hidden" aria-hidden="true">
+  <div class="card">
+    <h3>OTP Verification</h3>
+    <p class="small-muted">We sent a 6-digit code to <span id="otpPhone"></span></p>
+    <input id="otpInput" placeholder="Enter OTP (try 123456)" />
+    <div style="margin-top:10px;display:flex;gap:8px;">
+      <button id="verifyOtp">Verify</button>
+      <button id="autoVerify" class="ghost">Auto-verify (demo)</button>
+      <button id="closeOtp" class="ghost">Close</button>
+    </div>
+  </div>
+</div>
+
+<div id="upiModal" class="modal hidden" aria-hidden="true">
+  <div class="card">
+    <h3>Simulate UPI Payment</h3>
+    <p class="small-muted">This is a mock UPI checkout to preview commission handling.</p>
+    <div style="margin-top:8px">
+      <div class="row small-muted"><div>Job:</div><div id="upiJobTitle" class="spacer"></div><div id="upiJobAmount"></div></div>
+      <div class="row" style="margin-top:10px">
+        <div><label>UPI ID</label><input id="upiId" placeholder="eg: mobilenumber@upi" /></div>
       </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
-        <h3>Hook Pack</h3>
-        <ul class="pricing-features">
-          <li>5 unique hooks</li>
-          <li>Variations for different videos</li>
-          <li>Tested formulas</li>
-          <li>High retention guaranteed</li>
-        </ul>
-        <div class="price-tag">₹49</div>
-        <button class="buy-btn" onclick="openOrderModal('Hook Pack', '49')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Premium Hooks</h3>
-        <ul class="pricing-features">
-          <li>10 premium hooks</li>
-          <li> 15 SECONDS EACH </li>
-          <li>Storytelling hooks</li>
-          <li>Curiosity gap techniques</li>
-        </ul>
-        <div class="price-tag">₹99</div>
-        <button class="buy-btn" onclick="openOrderModal('Premium Hook Series', '99')">BUY NOW</button>
+      <div style="margin-top:10px" class="small-muted">Commission: <span id="upiCommission"></span></div>
+      <div style="margin-top:12px;display:flex;gap:8px">
+        <button id="confirmPay" class="green">Simulate Pay</button>
+        <button id="cancelPay" class="ghost">Cancel</button>
       </div>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- Reels & Youtube Shorts Section -->
-  <section id="reels-shorts" class="pricing-section test" data-aos="fade-up">
-    <h2 class="section-title">REELS & SHORTS SCRIPTS</h2>
-    <p class="section-subtitle">Viral-ready scripts for short-form content</p>
-    
-    <div class="pricing-grid">
-      <div class="pricing-card" data-aos="zoom-in">
-        <h3>Quick Shot</h3>
-        <ul class="pricing-features">
-          <li>45 second script</li>
-          <li>Trending concept</li>
-          <li>High shareability</li>
-          <li>Simple execution</li>
-          <li>Any Niech</li>
-        </ul>
-        <div class="price-tag">₹149</div>
-        <button class="buy-btn" onclick="openOrderModal('Quick Shot', '149')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
-        <h3>Engage Mini</h3>
-        <ul class="pricing-features">
-          <li>60 second script</li>
-          <li>Story arc included</li>
-          <li>2 emotional triggers</li>
-          <li>Call-to-action</li>
-          <li> Mainly-For-Episodes </li>
-        </ul>
-        <div class="price-tag">₹199</div>
-        <button class="buy-btn" onclick="openOrderModal('Engage Mini', '199')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Dual Boost</h3>
-        <ul class="pricing-features">
-          <li>2 viral hooks</li>
-          <li>90 second script</li>
-          <li>Multi-platform ready</li>
-          <li>Trend analysis</li>
-          <li> 3 Part Reels </li>
-        </ul>
-        <div class="price-tag">₹249</div>
-        <button class="buy-btn" onclick="openOrderModal('Dual Boost', '249')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="300">
-        <h3>Power Series</h3>
-        <ul class="pricing-features">
-          <li>150 second script</li>
-          <li>4 part structure</li>
-          <li>Value-packed</li>
-          <li>High retention flow</li>
-        </ul>
-        <div class="price-tag">₹299</div>
-        <button class="buy-btn" onclick="openOrderModal('Power Series', '349')">BUY NOW</button>
-      </div>
+<script>
+/*
+  OddJobber - Single-file preview app
+  - Uses localStorage to persist users, profiles, jobs, applications, payments
+  - OTP is simulated (code 123456) or Auto-verify
+  - UPI payment is simulated with commission (5%)
+*/
 
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
-        <h3>Pro Reel Pack</h3>
-        <ul class="pricing-features">
-          <li>180 second script</li>
-          <li>6 part structure</li>
-          <li>Advanced storytelling</li>
-          <li>Multi-hook approach</li>
-        </ul>
-        <div class="price-tag">₹349</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Reel Pack', '449')">BUY NOW</button>
+// ---------- Utilities ----------
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+const uid = () => (Date.now().toString(36) + Math.random().toString(36).slice(2,8));
+
+// ---------- Seed data keys ----------
+const STORAGE_KEYS = {
+  USERS: 'ojb_users',        // auth-like: {phone, id}
+  PROFILES: 'ojb_profiles',  // profiles keyed by id
+  JOBS: 'ojb_jobs',
+  APPS: 'ojb_apps',
+  PAYMENTS: 'ojb_payments',
+  SESSION: 'ojb_session'     // {userId}
+};
+
+// ---------- Default seed (3 users, 5 jobs) ----------
+function seedIfEmpty(){
+  if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
+    const users = [
+      { id: 'b1111111-1111', phone: '+919876543210' },
+      { id: 'c2222222-2222', phone: '+919812345678' },
+      { id: 'd3333333-3333', phone: '+919700000000' },
+    ];
+    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.PROFILES)) {
+    const profiles = {
+      'b1111111-1111': { id:'b1111111-1111', full_name: 'Ramesh Kumar', phone: '+919876543210', role:'poster', wallet_balance:100 },
+      'c2222222-2222': { id:'c2222222-2222', full_name: 'Manish Singh', phone: '+919812345678', role:'seeker', wallet_balance:50 },
+      'd3333333-3333': { id:'d3333333-3333', full_name: 'Sita Devi', phone: '+919700000000', role:'seeker', wallet_balance:10 },
+    };
+    localStorage.setItem(STORAGE_KEYS.PROFILES, JSON.stringify(profiles));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.JOBS)) {
+    const jobs = [
+      { id: uid(), poster_id:'b1111111-1111', title:'Paint store wall', description:'Paint 220 sq ft shop wall, 1 day', category:'Painting', pay:1500, location_text:'Jaipur, Rajasthan', expires_at: new Date(Date.now()+3*86400000).toISOString(), created_at:new Date().toISOString() },
+      { id: uid(), poster_id:'b1111111-1111', title:'Harvest help (1 day)', description:'Help harvest wheat field for half day', category:'Farm', pay:800, location_text:'Alwar, Rajasthan', expires_at: new Date(Date.now()+5*86400000).toISOString(), created_at:new Date().toISOString() },
+      { id: uid(), poster_id:'b1111111-1111', title:'Math tuition', description:'Teach class 6 maths for 2hrs', category:'Tutoring', pay:300, location_text:'Local', expires_at: new Date(Date.now()+7*86400000).toISOString(), created_at:new Date().toISOString() },
+      { id: uid(), poster_id:'b1111111-1111', title:'Bike delivery', description:'Deliver small parcels', category:'Delivery', pay:200, location_text:'Jaipur', expires_at: new Date(Date.now()+2*86400000).toISOString(), created_at:new Date().toISOString() },
+      { id: uid(), poster_id:'b1111111-1111', title:'Fix roof leak', description:'Repair small rooftop leak', category:'Repairs', pay:1200, location_text:'Jaipur', expires_at: new Date(Date.now()+6*86400000).toISOString(), created_at:new Date().toISOString() },
+    ];
+    localStorage.setItem(STORAGE_KEYS.JOBS, JSON.stringify(jobs));
+  }
+  if (!localStorage.getItem(STORAGE_KEYS.APPS)) localStorage.setItem(STORAGE_KEYS.APPS, JSON.stringify([]));
+  if (!localStorage.getItem(STORAGE_KEYS.PAYMENTS)) localStorage.setItem(STORAGE_KEYS.PAYMENTS, JSON.stringify([]));
+}
+
+// ---------- Storage helpers ----------
+const storage = {
+  get(key){ const v = localStorage.getItem(key); return v? JSON.parse(v): null; },
+  set(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
+};
+
+// ---------- Auth / Session ----------
+function currentSession(){ return storage.get(STORAGE_KEYS.SESSION); }
+function currentUser(){
+  const s = currentSession();
+  if(!s) return null;
+  const users = storage.get(STORAGE_KEYS.USERS) || [];
+  return users.find(u=>u.id===s.userId) || null;
+}
+
+function createOrGetUserByPhone(phone){
+  const users = storage.get(STORAGE_KEYS.USERS) || [];
+  const found = users.find(u=>u.phone === phone);
+  if(found) return found;
+  const newUser = { id: uid(), phone };
+  users.push(newUser);
+  storage.set(STORAGE_KEYS.USERS, users);
+  // create profile row
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  profiles[newUser.id] = { id:newUser.id, full_name: phone, phone, role:'seeker', wallet_balance:0 };
+  storage.set(STORAGE_KEYS.PROFILES, profiles);
+  return newUser;
+}
+
+// session sign in
+function signInByPhone(phone){
+  const user = createOrGetUserByPhone(phone);
+  storage.set(STORAGE_KEYS.SESSION, { userId: user.id });
+  // ensure profile exists
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  if(!profiles[user.id]) profiles[user.id] = { id:user.id, full_name: phone, phone, role: 'seeker', wallet_balance:0 };
+  storage.set(STORAGE_KEYS.PROFILES, profiles);
+  renderApp();
+}
+
+// sign out
+function signOut(){
+  localStorage.removeItem(STORAGE_KEYS.SESSION);
+  renderApp();
+}
+
+// ---------- App UI / Routing ----------
+const navEl = $('#nav');
+const appEl = $('#app');
+const otpModal = $('#otpModal');
+const otpPhoneSpan = $('#otpPhone');
+const otpInput = $('#otpInput');
+
+let pendingOtpPhone = null;
+let pendingSelectedRole = 'seeker';
+
+// Setup nav buttons
+function renderNav(){
+  const user = currentUser();
+  navEl.innerHTML = '';
+  if(user){
+    const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+    const p = profiles[user.id];
+    const label = p?.full_name ? p.full_name : (user.phone || 'Me');
+    navEl.innerHTML = `
+      <div class="row">
+        <div class="chip">${label}</div>
+        <button class="ghost" id="navJobs">Find Jobs</button>
+        <button class="ghost" id="navPost">Post Job</button>
+        <button class="ghost" id="navWallet">Wallet</button>
+        <button class="danger" id="navSignOut">Sign Out</button>
       </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
-        <h3>Elite Reel Pack</h3>
-        <ul class="pricing-features">
-          <li> 10 Parts Structure </li>
-          <li> 30 Seconds Each </li>
-          <li>Advanced storytelling</li>
-           <li>With #tags</li>
-        </ul>
-        <div class="price-tag">₹399</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Reel Pack', '399')">BUY NOW</button>
+    `;
+    $('#navSignOut').onclick = signOut;
+    $('#navJobs').onclick = ()=>route('jobs');
+    $('#navPost').onclick = ()=>route('post');
+    $('#navWallet').onclick = ()=>route('wallet');
+  } else {
+    navEl.innerHTML = `<button id="navLogin">Login / Signup</button>`;
+    $('#navLogin').onclick = ()=>route('login');
+  }
+}
+
+// Basic router: login, dashboard, jobs (list), post, wallet, profile
+function route(page){
+  window.location.hash = page;
+  renderApp();
+}
+
+function renderApp(){
+  renderNav();
+  const page = (window.location.hash || '#').replace('#','') || 'login';
+  if(!currentUser() && page !== 'login') {
+    route('login');
+    return;
+  }
+  if(page === 'login') renderLogin();
+  else if(page === 'jobs') renderJobs();
+  else if(page === 'post') renderPostJob();
+  else if(page === 'wallet') renderWallet();
+  else if(page === 'dashboard') renderDashboard();
+  else if(page === 'profile') renderProfile();
+  else renderLogin();
+}
+
+// ---------- Pages ----------
+function renderLogin(){
+  appEl.innerHTML = `
+    <div class="card" style="max-width:720px;margin:auto">
+      <div style="display:flex;gap:12px;align-items:center">
+        <div style="flex:1">
+          <h2>Login / Signup (OTP)</h2>
+          <p class="muted small">Enter your phone number. OTP is simulated for preview. Use 123456 or Auto-verify.</p>
+          <div style="margin-top:10px" class="grid grid-cols-3">
+            <div><input id="phoneInput" placeholder="9876543210" /></div>
+            <div>
+              <select id="roleSelect">
+                <option value="seeker">Job Seeker</option>
+                <option value="poster">Job Poster</option>
+              </select>
+            </div>
+            <div><button id="sendOtp">Send OTP</button></div>
+          </div>
+        </div>
+        <div style="width:260px">
+          <div class="card center">
+            <strong>Demo accounts</strong>
+            <p class="small-muted" style="margin-top:6px">Use seeded demo numbers:</p>
+            <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
+              <button class="ghost" data-phone="+919876543210">Ramesh (poster)</button>
+              <button class="ghost" data-phone="+919812345678">Manish (seeker)</button>
+              <button class="ghost" data-phone="+919700000000">Sita (seeker)</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  `;
+  // handlers
+  $('#sendOtp').onclick = ()=>{
+    const phoneRaw = $('#phoneInput').value.trim();
+    if(!phoneRaw){ alert('Enter phone'); return; }
+    const phone = phoneRaw.startsWith('+')?phoneRaw:'+91'+phoneRaw.replace(/^0+/, '');
+    pendingOtpPhone = phone;
+    pendingSelectedRole = $('#roleSelect').value;
+    otpPhoneSpan.textContent = phone;
+    otpInput.value = '';
+    otpModal.classList.remove('hidden');
+    otpModal.setAttribute('aria-hidden','false');
+  };
+  // demo preset handlers
+  $$('.ghost[data-phone]').forEach(btn=> btn.onclick = (e)=> {
+    const phone = e.target.getAttribute('data-phone');
+    $('#phoneInput').value = phone.replace('+91','');
+  });
+}
 
-  <!-- Long Videos Section -->
-  <section id="long-videos" class="pricing-section" data-aos="fade-up">
-    <h2 class="section-title">YOUTUBE LONG VIDEO SCRIPTS</h2>
-    <p class="section-subtitle">Complete scripts for engaging long-form content</p>
-    
-    <div class="pricing-grid">
-      <div class="pricing-card" data-aos="zoom-in">
-        <h3>Basic</h3>
-        <ul class="pricing-features">
-          <li>3 minute script</li>
-          <li>Clear structure</li>
-          <li>1 main point</li>
-          <li>Simple CTA</li>
-        </ul>
-        <div class="price-tag">₹49</div>
-        <button class="buy-btn" onclick="openOrderModal('Basic Long Video', '49')">BUY NOW</button>
+function renderDashboard(){
+  appEl.innerHTML = `
+    <div>
+      <div class="card">
+        <h2>Dashboard</h2>
+        <p class="small-muted">Quick links and stats.</p>
+        <div style="display:flex;gap:12px;margin-top:12px">
+          <div class="card" style="flex:1"><strong id="statJobs">0</strong><div class="small-muted">Jobs available</div></div>
+          <div class="card" style="flex:1"><strong id="statApps">0</strong><div class="small-muted">Applications</div></div>
+          <div class="card" style="flex:1"><strong id="statBalance">₹0</strong><div class="small-muted">Your balance</div></div>
+        </div>
       </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
-        <h3>Starter Plus</h3>
-        <ul class="pricing-features">
-          <li>4 minute script</li>
-          <li>2 main points</li>
-          <li>Transition phrases</li>
-          <li>Basic storytelling</li>
-        </ul>
-        <div class="price-tag">₹79</div>
-        <button class="buy-btn" onclick="openOrderModal('Starter Plus Long Video', '79')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Advanced</h3>
-        <ul class="pricing-features">
-          <li>6 minute script</li>
-          <li>3 main points</li>
-          <li>Engaging hooks</li>
-          <li>Visual descriptions</li>
-        </ul>
-        <div class="price-tag">₹99</div>
-        <button class="buy-btn" onclick="openOrderModal('Advanced Long Video', '99')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="300">
-        <h3>Value Pack</h3>
-        <ul class="pricing-features">
-          <li>8.5 minute script</li>
-          <li>Comprehensive content</li>
-          <li>Multiple CTAs</li>
-          <li>Audience engagement</li>
-        </ul>
-        <div class="price-tag">₹129</div>
-        <button class="buy-btn" onclick="openOrderModal('Value Pack Long Video', '129')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="400">
-        <h3>Pro</h3>
-        <ul class="pricing-features">
-          <li>10 minute script</li>
-          <li>Professional structure</li>
-          <li>Multiple hooks</li>
-          <li>SEO optimized</li>
-        </ul>
-        <div class="price-tag">₹179</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Long Video', '179')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="500">
-        <h3>Pro Plus</h3>
-        <ul class="pricing-features">
-          <li>15 minute script</li>
-          <li>In-depth content</li>
-          <li>Storytelling elements</li>
-          <li>Multiple segments</li>
-        </ul>
-        <div class="price-tag">₹249</div>
-        <button class="buy-btn" onclick="openOrderModal('Pro Plus Long Video', '249')">BUY NOW</button>
+
+      <div class="grid" style="grid-template-columns:1fr 340px;gap:12px;margin-top:12px">
+        <div>
+          <div class="card">
+            <h3>Nearby Jobs</h3>
+            <div id="dashJobs"></div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <h4>Your Profile</h4>
+            <div id="dashProfile"></div>
+            <div style="margin-top:8px"><button class="ghost" onclick="route('profile')">View full profile</button></div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <h4>Quick Actions</h4>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+              <button class="ghost" onclick="route('jobs')">Find Jobs</button>
+              <button class="ghost" onclick="route('post')">Post Job</button>
+              <button class="ghost" onclick="route('wallet')">Wallet</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
+  `;
+  const jobs = storage.get(STORAGE_KEYS.JOBS)||[];
+  $('#statJobs').textContent = jobs.length;
+  const apps = storage.get(STORAGE_KEYS.APPS)||[];
+  $('#statApps').textContent = apps.length;
+  const user = currentUser();
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  const p = profiles[user.id];
+  $('#statBalance').textContent = `₹${(p?.wallet_balance||0)}`;
+  // profile snippet
+  $('#dashProfile').innerHTML = `
+    <div><strong>${p?.full_name||p?.phone||'You'}</strong></div>
+    <div class="small-muted">Role: ${p?.role}</div>
+    <div class="small-muted">Phone: ${p?.phone}</div>
+  `;
+  // jobs
+  const container = $('#dashJobs');
+  container.innerHTML = '';
+  jobs.slice(0,6).forEach(job=>{
+    const el = document.createElement('div'); el.className='job'; 
+    el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:start">
+      <div><strong>${job.title}</strong><div class="small-muted">${job.category} • ${job.location_text}</div><div style="margin-top:6px">${job.description}</div></div>
+      <div style="text-align:right"><div class="pill">₹${job.pay}</div><div class="small-muted" style="margin-top:6px">Expires ${new Date(job.expires_at).toLocaleDateString()}</div></div>
+    </div>
+    <div class="actions"><button class="ghost" onclick="viewJob('${job.id}')">View</button><button class="green" onclick="openApply('${job.id}')">Apply</button></div>`;
+    container.appendChild(el);
+  });
+}
 
-  <!-- Brand Ads Section -->
-  <section id="brand-ads" class="pricing-section" data-aos="fade-up">
-    <h2 class="section-title">BRANDED AD SCRIPTS</h2>
-    <p class="section-subtitle">Professional scripts for brand promotions</p>
-    
-    <div class="pricing-grid">
-      <div class="pricing-card" data-aos="zoom-in">
-        <h3>45-sec Brand Ad</h3>
-        <ul class="pricing-features">
-          <li>Hook + Benefits + CTA</li>
-          <li>Emotional appeal</li>
-          <li>Brand messaging</li>
-          <li>Clear conversion path</li>
-        </ul>
-        <div class="price-tag">₹299</div>
-        <button class="buy-btn" onclick="openOrderModal('45-sec Brand Ad', '299')">BUY NOW</button>
+function renderJobs(){
+  const jobs = storage.get(STORAGE_KEYS.JOBS)||[];
+  appEl.innerHTML = `
+    <div>
+      <div class="card">
+        <h2>Find Jobs</h2>
+        <div class="small-muted">Browse recent job listings near you (demo).</div>
       </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="100">
-        <h3>60-sec Story Ad</h3>
-        <ul class="pricing-features">
-          <li>Mini-story format</li>
-          <li>Problem-solution</li>
-          <li>Emotional journey</li>
-          <li>Strong CTA</li>
-        </ul>
-        <div class="price-tag">₹399</div>
-        <button class="buy-btn" onclick="openOrderModal('60-sec Story Ad', '399')">BUY NOW</button>
-      </div>
-      
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Product Demo</h3>
-        <ul class="pricing-features">
-          <li>Feature highlights</li>
-          <li>Benefits showcase</li>
-          <li>Comparison points</li>
-          <li>Urgency creation</li>
-        </ul>
-        <div class="price-tag">₹499</div>
-        <button class="buy-btn" onclick="openOrderModal('Product Demo Ad', '499')">BUY NOW</button>
+      <div class="grid" style="grid-template-columns:1fr 320px;gap:12px;margin-top:12px">
+        <div>
+          <div id="jobsList" class="card"></div>
+        </div>
+        <div>
+          <div class="card">
+            <h4>Filters</h4>
+            <div style="margin-top:8px">
+              <input id="filterText" placeholder="Search title, category, location" />
+              <div style="margin-top:8px"><button id="applyFilter" class="ghost">Apply</button></div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:12px">
+            <h4>Seeded Jobs</h4>
+            <div class="small-muted">Demo data loaded</div>
+          </div>
+        </div>
       </div>
     </div>
-  </section>
-
-  <!-- Buy Website  -->
-  <section id="buy-website" class="pricing-section" data-aos="fade-up">
-    <h2 class="section-title">Buy Website</h2>
-    <p class="section-subtitle">Buy a website like synex</p>
-
-      <div class="pricing-card" data-aos="zoom-in" data-aos-delay="200">
-        <h3>Buy Website</h3>
-        <ul class="pricing-features">
-          <li>Manual Control</li>
-          <li>Whatsapp Based</li>
-          <li>No Database</li>
-          <li>Easy To Access</li>
-          <li>Smooth UI</li>
-          <li>Only HTML</li>
-        </ul>
-        <div class="price-tag">₹999</div>
-        <button class="buy-btn" onclick="openOrderModal('Buy A Website at', '999')">BUY NOW</button>
+  `;
+  function listJobs(filter=''){
+    const container = $('#jobsList');
+    container.innerHTML = '';
+    let out = jobs.slice().sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
+    if(filter) out = out.filter(j=> (j.title+ ' ' + j.description + ' ' + j.category + ' ' + j.location_text).toLowerCase().includes(filter.toLowerCase()));
+    out.forEach(job=>{
+      const el = document.createElement('div'); el.className='job'; 
+      el.innerHTML = `<div style="display:flex;justify-content:space-between">
+        <div>
+          <strong>${job.title}</strong><div class="small-muted">${job.category} • ${job.location_text}</div>
+          <div style="margin-top:8px">${job.description}</div>
+        </div>
+        <div style="text-align:right"><div class="pill">₹${job.pay}</div><div class="small-muted" style="margin-top:6px">Expires ${new Date(job.expires_at).toLocaleDateString()}</div></div>
       </div>
-  </section>
-
-  <section id="testimonials" class="testimonials" data-aos="fade-up" data-aos-duration="1500">
-    <h2 class="section-title">Client Reviews</h2>
-    <div class="testimonial-card">"Amazing script quality! My videos blew up. - GamerX"</div>
-    <div class="testimonial-card">"Quick, creative and on point. - CreatorY"</div>
-    <div class="testimonial-card">"Affordable premium work. Highly recommend. - VloggerZ"</div>
-  </section>
-
-  <footer>
-    &copy; 2025 Synex | All Rights Reserved
-  </footer>
-
-  <script>
-    // Initialize animations
-    AOS.init();
-    
-    // Initialize particles.js
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 80 },
-        color: { value: "#00f2ff" },
-        shape: { type: "circle" },
-        opacity: { value: 0.3 },
-        size: { value: 4 },
-        line_linked: {
-          enable: true,
-          distance: 150,
-          color: "#00f2ff",
-          opacity: 0.4,
-          width: 1
-        },
-        move: { enable: true, speed: 3 }
-      }
+      <div class="actions"><button class="ghost" onclick="viewJob('${job.id}')">View</button><button class="green" onclick="openApply('${job.id}')">Apply</button></div>`;
+      container.appendChild(el);
     });
-    
-    // Initialize tilt effects
-    VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
-      max: 15,
-      speed: 400,
-      glare: true,
-      "max-glare": 0.5
-    });
+  }
+  listJobs();
+  $('#applyFilter').onclick = ()=> listJobs($('#filterText').value.trim());
+}
 
-    // Header scroll effect
-    let lastScrollTop = 0;
-    window.addEventListener('scroll', function() {
-      const header = document.getElementById('main-header');
-      let currentScrollTop = window.scrollY;
-      if (currentScrollTop > lastScrollTop) {
-        header.style.top = '-120px'; // hide when scrolling down
-      } else {
-        header.style.top = '10px'; // show when scrolling up
-      }
-      lastScrollTop = currentScrollTop <= 0 ? 0 : currentScrollTop;
-    });
+function renderPostJob(){
+  appEl.innerHTML = `
+    <div class="card" style="max-width:720px;margin:auto">
+      <h2>Post a Job</h2>
+      <p class="small-muted">Create a job listing. You must be a Poster.</p>
+      <div style="margin-top:10px">
+        <input id="jobTitle" placeholder="Title" />
+        <textarea id="jobDesc" placeholder="Description" style="margin-top:8px"></textarea>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input id="jobCategory" placeholder="Category" />
+          <input id="jobPay" placeholder="Pay (₹)" type="number" />
+        </div>
+        <input id="jobLocation" placeholder="Location (village / city)" style="margin-top:8px" />
+        <div style="margin-top:12px"><button id="postJobBtn">Post Job</button></div>
+      </div>
+    </div>
+  `;
+  $('#postJobBtn').onclick = ()=>{
+    const title = $('#jobTitle').value.trim();
+    const desc = $('#jobDesc').value.trim();
+    const category = $('#jobCategory').value.trim() || 'General';
+    const pay = Number($('#jobPay').value) || 0;
+    const location_text = $('#jobLocation').value.trim() || 'Local';
+    if(!title || !desc){ alert('Please add title and description'); return; }
+    const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
+    const user = currentUser();
+    const newJob = { id: uid(), poster_id: user.id, title, description: desc, category, pay, location_text, created_at: new Date().toISOString(), expires_at: new Date(Date.now()+7*86400000).toISOString() };
+    jobs.unshift(newJob);
+    storage.set(STORAGE_KEYS.JOBS, jobs);
+    alert('Job posted!');
+    route('jobs');
+  };
+}
 
-    // Theme toggle
-    function toggleTheme() {
-      document.body.classList.toggle('light');
-      if (document.body.classList.contains('light')) {
-        document.body.style.backgroundColor = '#fff';
-        document.body.style.color = '#000';
-      } else {
-        document.body.style.backgroundColor = '#0f0f0f';
-        document.body.style.color = '#fff';
-      }
-    }
+function renderWallet(){
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  const user = currentUser();
+  const p = profiles[user.id];
+  appEl.innerHTML = `
+    <div class="card" style="max-width:720px;margin:auto">
+      <h2>Wallet</h2>
+      <div style="display:flex;gap:12px;margin-top:12px">
+        <div style="flex:1">
+          <div class="card">
+            <div class="row"><div><strong>Balance</strong></div><div class="spacer"></div><div>₹${p.wallet_balance || 0}</div></div>
+            <div style="margin-top:8px" class="small-muted">You can simulate sending payment for a job. Commission 5% will be taken by OddJobber (demo).</div>
+          </div>
+          <div style="margin-top:12px" class="card">
+            <h4>Pay for a Job (demo)</h4>
+            <div style="display:flex;gap:8px">
+              <select id="payJobSelect"></select>
+              <button id="payForJob" class="green">Pay</button>
+            </div>
+          </div>
+        </div>
+        <div style="width:320px">
+          <div class="card">
+            <h4>Payments</h4>
+            <div id="paymentsList" class="small-muted"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
+  const paySel = $('#payJobSelect');
+  paySel.innerHTML = jobs.map(j=>`<option value="${j.id}">${j.title} — ₹${j.pay} • ${j.location_text}</option>`).join('');
+  $('#payForJob').onclick = ()=> {
+    const jobId = paySel.value;
+    if(!jobId){ alert('Select job'); return; }
+    openUPIModal(jobId);
+  };
+  refreshPayments();
+}
 
-    // Modal functionality
-    const modal = document.getElementById("orderModal");
-    const span = document.getElementsByClassName("close")[0];
-    
-    // Open modal function
-    function openOrderModal(plan, price) {
-      document.getElementById("selectedPlan").value = plan;
-      document.getElementById("selectedPrice").value = price;
-      modal.style.display = "block";
+function renderProfile(){
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  const user = currentUser();
+  const p = profiles[user.id];
+  appEl.innerHTML = `
+    <div class="card" style="max-width:720px;margin:auto">
+      <h2>Profile</h2>
+      <div style="display:flex;gap:12px">
+        <div style="flex:1">
+          <input id="profileName" value="${p.full_name || ''}" />
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <input id="profilePhone" value="${p.phone || ''}" />
+            <select id="profileRole">
+              <option ${p.role==='seeker'?'selected':''} value="seeker">Seeker</option>
+              <option ${p.role==='poster'?'selected':''} value="poster">Poster</option>
+            </select>
+          </div>
+          <div style="margin-top:10px">
+            <button id="saveProfile" class="green">Save</button>
+          </div>
+        </div>
+        <div style="width:260px">
+          <div class="card small-muted">User ID: ${p.id}</div>
+        </div>
+      </div>
+    </div>
+  `;
+  $('#saveProfile').onclick = ()=>{
+    const name = $('#profileName').value.trim();
+    const phone = $('#profilePhone').value.trim();
+    const role = $('#profileRole').value;
+    const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+    profiles[user.id] = {...profiles[user.id], full_name:name || profiles[user.id].full_name, phone:phone || profiles[user.id].phone, role};
+    storage.set(STORAGE_KEYS.PROFILES, profiles);
+    alert('Profile saved');
+    renderNav();
+  };
+}
+
+// ---------- Job view / apply ----------
+function viewJob(jobId){
+  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
+  const job = jobs.find(j=>j.id===jobId);
+  if(!job) return alert('Job not found');
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  const poster = profiles[job.poster_id];
+  appEl.innerHTML = `
+    <div class="card" style="max-width:820px;margin:auto">
+      <div style="display:flex;justify-content:space-between">
+        <div><h2>${job.title}</h2><div class="small-muted">${job.category} • ${job.location_text}</div></div>
+        <div style="text-align:right"><div class="pill">₹${job.pay}</div><div class="small-muted">Expires ${new Date(job.expires_at).toLocaleDateString()}</div></div>
+      </div>
+      <div style="margin-top:12px">${job.description}</div>
+      <div style="margin-top:12px" class="small-muted">Posted by: ${poster?.full_name || poster?.phone || 'Unknown'}</div>
+      <div style="margin-top:12px" class="actions">
+        <button class="green" onclick="openApply('${job.id}')">Apply</button>
+        <button class="ghost" onclick="route('jobs')">Back to list</button>
+      </div>
+    </div>
+  `;
+}
+
+function openApply(jobId){
+  const message = prompt('Write a short message to the poster (demo):', 'I can do this job today.');
+  if(message === null) return;
+  const user = currentUser();
+  const apps = storage.get(STORAGE_KEYS.APPS) || [];
+  apps.push({ id: uid(), job_id: jobId, seeker_id: user.id, message, status: 'pending', created_at: new Date().toISOString()});
+  storage.set(STORAGE_KEYS.APPS, apps);
+  alert('Application sent (demo). Poster will be notified in a real app.');
+  route('jobs');
+}
+
+// ---------- UPI mock flow ----------
+function openUPIModal(jobId){
+  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
+  const job = jobs.find(j=>j.id===jobId);
+  if(!job) return alert('Job not found');
+  $('#upiModal').classList.remove('hidden'); $('#upiModal').setAttribute('aria-hidden','false');
+  $('#upiJobTitle').textContent = job.title;
+  $('#upiJobAmount').textContent = `₹${job.pay}`;
+  const commission = Math.round(job.pay * 0.05);
+  $('#upiCommission').textContent = `₹${commission} (5%)`;
+  $('#upiModal').dataset.jobId = jobId;
+  $('#upiId').value = '';
+}
+
+$('#cancelPay').onclick = ()=> { $('#upiModal').classList.add('hidden'); $('#upiModal').setAttribute('aria-hidden','true'); };
+
+$('#confirmPay').onclick = ()=>{
+  const jobId = $('#upiModal').dataset.jobId;
+  const upi = $('#upiId').value.trim();
+  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
+  const job = jobs.find(j=>j.id===jobId);
+  if(!job) return alert('Job missing');
+  if(!upi) return alert('Enter UPI ID (demo)');
+  // simulate payment success
+  const commission = Math.round(job.pay * 0.05);
+  const seekerAmount = job.pay - commission;
+  // record payment
+  const payments = storage.get(STORAGE_KEYS.PAYMENTS) || [];
+  const payRecord = { id: uid(), job_id: job.id, poster_id: currentUser().id, seeker_id: job.poster_id, amount: job.pay, commission, upi, status:'SUCCESS', created_at: new Date().toISOString() };
+  payments.unshift(payRecord);
+  storage.set(STORAGE_KEYS.PAYMENTS, payments);
+  // update balances: subtract from poster's wallet (if poster), add to seeker's wallet
+  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+  // in demo, poster may be current user (paying) or not - for simplicity, if current user is poster we'll subtract; else we won't
+  const current = currentUser();
+  if(profiles[current.id]) profiles[current.id].wallet_balance = Math.max(0,(profiles[current.id].wallet_balance||0) - job.pay);
+  // The payment is to job.poster_id (the seeker in our simplified demo flows where poster posts job and seekers apply). 
+  // For demo we credit the poster's wallet? Wait — correct flow: Poster posts job; seeker does job; poster pays seeker.
+  // Here, job.poster_id is the poster; we should credit seeker, but we don't have seeker selection in pay flow (simple demo: credit the first seeker who applied or credit a demo seeker)
+  // We'll credit a seeker if there's an application; else credit "Manish" seeded user as a demo seeker.
+  const apps = storage.get(STORAGE_KEYS.APPS) || [];
+  const appForJob = apps.find(a=>a.job_id===job.id);
+  let creditedSeekerId = appForJob ? appForJob.seeker_id : 'c2222222-2222'; // default demo seeker
+  // credit seeker
+  if(!profiles[creditedSeekerId]) profiles[creditedSeekerId] = { id:creditedSeekerId, full_name:'Demo Seeker', phone:'', role:'seeker', wallet_balance:0 };
+  profiles[creditedSeekerId].wallet_balance = (profiles[creditedSeekerId].wallet_balance || 0) + seekerAmount;
+  // store commission record (simple)
+  const commissionRecords = storage.get(STORAGE_KEYS.PAYMENTS) || [];
+  storage.set(STORAGE_KEYS.PAYMENTS, payments);
+  storage.set(STORAGE_KEYS.PROFILES, profiles);
+  $('#upiModal').classList.add('hidden'); $('#upiModal').setAttribute('aria-hidden','true');
+  alert(`Payment simulated!\nTotal: ₹${job.pay}\nCommission(5%): ₹${commission}\nCredited seeker: ₹${seekerAmount}`);
+  renderWallet();
+};
+
+// refresh payments list in wallet
+function refreshPayments(){
+  const payments = storage.get(STORAGE_KEYS.PAYMENTS) || [];
+  $('#paymentsList').innerHTML = payments.slice(0,6).map(p=>`<div style="padding:8px;border-bottom:1px solid #f1f5f9"><div><strong>₹${p.amount}</strong> • ${p.status}</div><div class="small-muted">Job ${p.job_id} • ${new Date(p.created_at).toLocaleString()}</div></div>`).join('') || '<div class="small-muted">No payments yet</div>';
+}
+
+// ---------- OTP modal handlers ----------
+$('#verifyOtp').onclick = ()=> {
+  const code = otpInput.value.trim();
+  if(code === '123456') {
+    // sign in
+    signInByPhone(pendingOtpPhone);
+    otpModal.classList.add('hidden'); otpModal.setAttribute('aria-hidden','true');
+    alert('OTP verified (demo). Profile created automatically (if new).');
+    // set role if requested
+    const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
+    const u = storage.get(STORAGE_KEYS.USERS).find(x=>x.phone===pendingOtpPhone);
+    if(u) {
+      profiles[u.id] = profiles[u.id] || { id:u.id, full_name: pendingOtpPhone, phone: pendingOtpPhone, role: pendingSelectedRole, wallet_balance:0 };
+      profiles[u.id].role = pendingSelectedRole;
+      storage.set(STORAGE_KEYS.PROFILES, profiles);
     }
-    
-    // Close modal when clicking X
-    span.onclick = function() {
-      modal.style.display = "none";
-    }
-    
-    // Close modal when clicking outside
-    window.onclick = function(event) {
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-    
-    // Form submission
-    document.getElementById("orderForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      
-      const plan = document.getElementById("selectedPlan").value;
-      const price = document.getElementById("selectedPrice").value;
-      const name = document.getElementById("userName").value;
-      const phone = document.getElementById("userPhone").value;
-      const email = document.getElementById("userEmail").value;
-      
-      // Validate phone number
-      if (!phone.match(/^[0-9]{10}$/)) {
-        alert("Please enter a valid 10-digit phone number");
-        return;
-      }
-      
-      // Create WhatsApp message
-      let message = `Hello Synex Team!%0A%0A`;
-      message += `I want to order: *${plan} (₹${price})*%0A`;
-      message += `Name: *${name}*%0A`;
-      message += `Phone: *${phone}*%0A`;
-      if (email) message += `Email: *${email}*%0A`;
-      message += `%0APlease confirm my order and provide payment details.`;
-      
-      // Open WhatsApp
-      window.open(`https://wa.me/918618365136?text=${message}`, '_blank');
-      
-      // Close modal
-      modal.style.display = "none";
-      
-      // Reset form
-      document.getElementById("orderForm").reset();
-    });
-  </script>
+    renderApp();
+  } else {
+    alert('Wrong code in demo. Try 123456 or Auto-verify.');
+  }
+};
+
+$('#autoVerify').onclick = ()=> {
+  otpInput.value = '123456';
+  $('#verifyOtp').click();
+};
+
+$('#closeOtp').onclick = ()=> { otpModal.classList.add('hidden'); otpModal.setAttribute('aria-hidden','true'); };
+
+// ---------- init ----------
+seedIfEmpty();
+
+// initial route
+if(!window.location.hash) window.location.hash = 'login';
+renderApp();
+
+// handle simple hash nav changes
+window.addEventListener('hashchange', renderApp);
+
+// Expose some functions for buttons
+window.viewJob = viewJob;
+window.openApply = openApply;
+window.route = route;
+</script>
 </body>
 </html>
+
+
+---
+
+If you want next:
+
+I can convert this preview into a downloadable ZIP (HTML file already produced) or
+
+Add a tiny static map preview, or
+
+Add a mocked Razorpay popup that looks closer to the real one.
+
+
+Which one should I do next?
+
