@@ -13,7 +13,7 @@
   body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);color:#0f172a}
   .container{max-width:1100px;margin:28px auto;padding:18px}
   header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  h1{margin:0;font-size:20px}
+  h1{margin:0;font-sirze:20px}
   nav{display:flex;gap:8px}
   button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--primary);color:#fff}
   .muted{color:var(--muted);font-size:13px}
@@ -647,7 +647,7 @@ $('#verifyOtp').onclick = ()=> {
     renderApp();
   } else {
     alert('Wrong code in demo. Try 123456 or Auto-verify.');
-  }
+  }t
 };
 
 $('#autoVerify').onclick = ()=> {
@@ -672,20 +672,4 @@ window.viewJob = viewJob;
 window.openApply = openApply;
 window.route = route;
 </script>
-</body>
 </html>
-
-
----
-
-If you want next:
-
-I can convert this preview into a downloadable ZIP (HTML file already produced) or
-
-Add a tiny static map preview, or
-
-Add a mocked Razorpay popup that looks closer to the real one.
-
-
-Which one should I do next?
-
