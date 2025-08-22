@@ -1,235 +1,251 @@
-
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>OddJobber — Preview</title>
+<title>OddJobber — Demo with Categories & Subscription (₹150)</title>
 <style>
-  :root{
-    --bg:#f8fafc; --card:#ffffff; --primary:#0ea5e9; --accent:#10b981; --muted:#64748b;
-    --danger:#ef4444; --glass: rgba(255,255,255,0.6);
-  }
-  *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Arial;}
-  body{margin:0;background:linear-gradient(180deg,var(--bg),#eef2ff);color:#0f172a}
-  .container{max-width:1100px;margin:28px auto;padding:18px}
-  header{display:flex;align-items:center;justify-content:space-between;gap:12px}
-  h1{margin:0;font-sirze:20px}
+  :root{--bg:#f8fafc;--card:#fff;--primary:#0ea5e9;--accent:#10b981;--muted:#64748b;--danger:#ef4444}
+  *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;}
+  body{margin:0;background:linear-gradient(#f8fafc,#eef2ff);color:#06203a}
+  .wrap{max-width:1100px;margin:28px auto;padding:18px}
+  header{display:flex;align-items:center;justify-content:space-between}
+  .logo{font-weight:700;color:var(--primary);font-size:20px}
   nav{display:flex;gap:8px}
   button{cursor:pointer;border:0;padding:8px 12px;border-radius:8px;background:var(--primary);color:#fff}
-  .muted{color:var(--muted);font-size:13px}
+  .ghost{background:transparent;border:1px solid #e6eef8;color:#06203a}
+  .danger{background:var(--danger)}
   .card{background:var(--card);border-radius:12px;padding:14px;box-shadow:0 6px 18px rgba(2,6,23,0.06);margin-top:14px}
   .grid{display:grid;gap:12px}
-  .grid-cols-3{grid-template-columns:1fr 1fr 1fr}
+  .grid-3{grid-template-columns:1fr 1fr 1fr}
   input,select,textarea{width:100%;padding:8px;border-radius:8px;border:1px solid #e6eef8;background:#fff}
-  .job{padding:12px;border-radius:10px;border:1px solid #eef2ff;background:linear-gradient(180deg,#fff,#fbfdff)}
-  .small{font-size:13px}
-  .actions{display:flex;gap:8px;margin-top:8px}
-  .ghost{background:transparent;border:1px solid #e6eef8;color:#0f172a}
-  .green{background:var(--accent);color:#fff}
-  .danger{background:var(--danger);color:#fff}
-  .topline{display:flex;gap:8px;align-items:center}
-  .logo{font-weight:700;color:var(--primary);font-size:18px}
-  footer{margin-top:30px;text-align:center;color:var(--muted);font-size:13px}
+  .job{padding:12px;border-radius:10px;border:1px solid #eef2ff;background:linear-gradient(#fff,#fbfdff);margin-bottom:10px}
+  .small{font-size:13px;color:var(--muted)}
+  .pill{display:inline-block;padding:6px 10px;border-radius:999px;background:#eef2ff;color:var(--primary);font-weight:600}
   .modal{position:fixed;inset:0;background:rgba(2,6,23,0.4);display:flex;align-items:center;justify-content:center}
-  .modal .card{max-width:480px;width:96%}
   .hidden{display:none}
-  .chip{display:inline-block;padding:6px 8px;border-radius:999px;background:#f1f5f9;font-size:12px;border:1px solid #e2e8f0}
-  .row{display:flex;gap:12px;align-items:center}
-  .spacer{flex:1}
-  .small-muted{font-size:12px;color:var(--muted)}
-  .pill{padding:6px 8px;border-radius:999px;background:#eef2ff;color:var(--primary);font-weight:600;font-size:13px}
-  .center{text-align:center}
+  .row{display:flex;gap:8px;align-items:center}
+  .sp{flex:1}
+  .notif-badge{background:red;color:#fff;padding:4px 7px;border-radius:999px;font-size:12px}
+  label{font-size:13px;color:#334155}
+  .muted{color:var(--muted)}
+  footer{margin-top:20px;text-align:center;color:var(--muted);font-size:13px}
+  ul{padding-left:18px;margin:0}
 </style>
 </head>
 <body>
-
-<div class="container">
+<div class="wrap">
   <header>
-    <div class="topline">
-      <div class="logo">OddJobber</div>
-      <div class="muted small" style="margin-left:8px">Earn from small jobs around you</div>
+    <div>
+      <div class="logo">OddJobber — Demo</div>
+      <div class="small muted">Categories, subscription (₹150), notifications demo</div>
     </div>
     <nav id="nav"></nav>
   </header>
 
-  <main id="app">
-    <!-- Content injected by JS -->
-  </main>
+  <main id="app"></main>
 
-  <footer class="muted small">This is a local demo preview. No external services are used.</footer>
+  <footer class="small muted">Local demo — no external services. Subscriptions & payments are simulated.</footer>
 </div>
 
-<!-- Modals -->
+<!-- OTP Modal (demo) -->
 <div id="otpModal" class="modal hidden" aria-hidden="true">
-  <div class="card">
-    <h3>OTP Verification</h3>
-    <p class="small-muted">We sent a 6-digit code to <span id="otpPhone"></span></p>
-    <input id="otpInput" placeholder="Enter OTP (try 123456)" />
-    <div style="margin-top:10px;display:flex;gap:8px;">
+  <div class="card" style="max-width:520px;width:96%">
+    <h3>OTP Verification (Demo)</h3>
+    <p class="small muted">OTP simulated: use <strong>123456</strong> or Auto-verify.</p>
+    <div class="row" style="margin-top:8px">
+      <input id="otpInput" placeholder="Enter OTP (123456)" />
       <button id="verifyOtp">Verify</button>
-      <button id="autoVerify" class="ghost">Auto-verify (demo)</button>
+      <button id="autoVerify" class="ghost">Auto-verify</button>
       <button id="closeOtp" class="ghost">Close</button>
     </div>
   </div>
 </div>
 
-<div id="upiModal" class="modal hidden" aria-hidden="true">
-  <div class="card">
-    <h3>Simulate UPI Payment</h3>
-    <p class="small-muted">This is a mock UPI checkout to preview commission handling.</p>
+<!-- Subscription Modal -->
+<div id="subModal" class="modal hidden" aria-hidden="true">
+  <div class="card" style="max-width:520px;width:96%">
+    <h3>Subscribe to OddJobber — ₹150 / month</h3>
+    <p class="small muted">Access full features: receive category notifications, apply to jobs, and be discoverable.</p>
     <div style="margin-top:8px">
-      <div class="row small-muted"><div>Job:</div><div id="upiJobTitle" class="spacer"></div><div id="upiJobAmount"></div></div>
-      <div class="row" style="margin-top:10px">
-        <div><label>UPI ID</label><input id="upiId" placeholder="eg: mobilenumber@upi" /></div>
+      <div class="row" style="align-items:center">
+        <div><label>Main plan</label><div class="pill">₹150 now → ₹150 monthly</div></div>
+        <div class="sp"></div>
+        <div><button id="paySub" class="green">Pay ₹150 (Simulate)</button></div>
       </div>
-      <div style="margin-top:10px" class="small-muted">Commission: <span id="upiCommission"></span></div>
-      <div style="margin-top:12px;display:flex;gap:8px">
-        <button id="confirmPay" class="green">Simulate Pay</button>
-        <button id="cancelPay" class="ghost">Cancel</button>
-      </div>
+      <div style="margin-top:10px" class="small muted">Demo: clicking Pay will activate subscription and set next due date 30 days later.</div>
+      <div style="margin-top:12px"><button id="closeSub" class="ghost">Close</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- Notifications Modal -->
+<div id="notifModal" class="modal hidden" aria-hidden="true">
+  <div class="card" style="max-width:700px;width:96%">
+    <h3>Your Notifications</h3>
+    <div id="notifList" style="margin-top:8px"></div>
+    <div style="margin-top:12px" class="row">
+      <button id="clearNotif" class="ghost">Clear All</button>
+      <div class="sp"></div>
+      <button id="closeNotif" class="ghost">Close</button>
     </div>
   </div>
 </div>
 
 <script>
-/*
-  OddJobber - Single-file preview app
-  - Uses localStorage to persist users, profiles, jobs, applications, payments
-  - OTP is simulated (code 123456) or Auto-verify
-  - UPI payment is simulated with commission (5%)
+/* OddJobber demo with categories & subscription
+   - Single-file app using localStorage
+   - Users select worker categories in profile (multiple)
+   - Posting a job asks for Main Category
+   - Posting a job sends notifications to users who:
+       - have that category in their profile AND
+       - have an active subscription (paid ₹150)
+   - Subscription simulated; pay ₹150 to activate (and demo monthly due date)
 */
 
-// ---------- Utilities ----------
-const $ = (sel, root=document) => root.querySelector(sel);
-const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
-const uid = () => (Date.now().toString(36) + Math.random().toString(36).slice(2,8));
-
-// ---------- Seed data keys ----------
-const STORAGE_KEYS = {
-  USERS: 'ojb_users',        // auth-like: {phone, id}
-  PROFILES: 'ojb_profiles',  // profiles keyed by id
+// ---------------- storage keys ----------------
+const KEYS = {
+  USERS: 'ojb_users',
+  PROFILES: 'ojb_profiles',
   JOBS: 'ojb_jobs',
   APPS: 'ojb_apps',
   PAYMENTS: 'ojb_payments',
-  SESSION: 'ojb_session'     // {userId}
+  SESSION: 'ojb_session',
+  NOTIFS: 'ojb_notifications'
 };
 
-// ---------- Default seed (3 users, 5 jobs) ----------
-function seedIfEmpty(){
-  if (!localStorage.getItem(STORAGE_KEYS.USERS)) {
-    const users = [
-      { id: 'b1111111-1111', phone: '+919876543210' },
-      { id: 'c2222222-2222', phone: '+919812345678' },
-      { id: 'd3333333-3333', phone: '+919700000000' },
-    ];
-    localStorage.setItem(STORAGE_KEYS.USERS, JSON.stringify(users));
+// ---------------- categories list (25+) ----------------
+const CATEGORIES = [
+  'Carpenter','Mechanic','Helper','Agriculture','Electrician','Plumber','Painter','Mason','Tailor',
+  'Tutor','Delivery','Driver','Cleaner','Cook','Gardener','Welder','Roofer','HVAC Technician','Pest Control',
+  'Photographer','Event Staff','Babysitter','Animal Care','Laundry','Upholstery','CCTV Technician','Security Guard',
+  'IT Support','Beauty & Salon','Plumber Assistant'
+];
+
+// ---------------- utils ----------------
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const uid = () => (Date.now().toString(36)+Math.random().toString(36).slice(2,8));
+const fmtDate = ts => new Date(ts).toLocaleString();
+
+// ---------------- storage helpers ----------------
+const store = {
+  get(k){ const v = localStorage.getItem(k); return v?JSON.parse(v):null; },
+  set(k,v){ localStorage.setItem(k, JSON.stringify(v)); }
+};
+
+// ---------------- seed demo data ----------------
+function seed(){
+  if(!store.get(KEYS.USERS)){
+    store.set(KEYS.USERS, [
+      { id:'u_ramesh', phone:'+919876543210' },
+      { id:'u_manish', phone:'+919812345678' },
+      { id:'u_sita', phone:'+919700000000' }
+    ]);
   }
-  if (!localStorage.getItem(STORAGE_KEYS.PROFILES)) {
-    const profiles = {
-      'b1111111-1111': { id:'b1111111-1111', full_name: 'Ramesh Kumar', phone: '+919876543210', role:'poster', wallet_balance:100 },
-      'c2222222-2222': { id:'c2222222-2222', full_name: 'Manish Singh', phone: '+919812345678', role:'seeker', wallet_balance:50 },
-      'd3333333-3333': { id:'d3333333-3333', full_name: 'Sita Devi', phone: '+919700000000', role:'seeker', wallet_balance:10 },
+  if(!store.get(KEYS.PROFILES)){
+    const p = {
+      'u_ramesh': { id:'u_ramesh', full_name:'Ramesh Kumar', phone:'+919876543210', role:'poster', categories:['Carpenter','Painter'], wallet_balance:100, subscription:{active:true,next_due: Date.now()+30*24*3600*1000} },
+      'u_manish': { id:'u_manish', full_name:'Manish Singh', phone:'+919812345678', role:'seeker', categories:['Mechanic','Helper','Delivery'], wallet_balance:50, subscription:{active:true,next_due: Date.now()+15*24*3600*1000} },
+      'u_sita': { id:'u_sita', full_name:'Sita Devi', phone:'+919700000000', role:'seeker', categories:['Agriculture','Helper'], wallet_balance:10, subscription:{active:false,next_due:null} }
     };
-    localStorage.setItem(STORAGE_KEYS.PROFILES, JSON.stringify(profiles));
+    store.set(KEYS.PROFILES, p);
   }
-  if (!localStorage.getItem(STORAGE_KEYS.JOBS)) {
-    const jobs = [
-      { id: uid(), poster_id:'b1111111-1111', title:'Paint store wall', description:'Paint 220 sq ft shop wall, 1 day', category:'Painting', pay:1500, location_text:'Jaipur, Rajasthan', expires_at: new Date(Date.now()+3*86400000).toISOString(), created_at:new Date().toISOString() },
-      { id: uid(), poster_id:'b1111111-1111', title:'Harvest help (1 day)', description:'Help harvest wheat field for half day', category:'Farm', pay:800, location_text:'Alwar, Rajasthan', expires_at: new Date(Date.now()+5*86400000).toISOString(), created_at:new Date().toISOString() },
-      { id: uid(), poster_id:'b1111111-1111', title:'Math tuition', description:'Teach class 6 maths for 2hrs', category:'Tutoring', pay:300, location_text:'Local', expires_at: new Date(Date.now()+7*86400000).toISOString(), created_at:new Date().toISOString() },
-      { id: uid(), poster_id:'b1111111-1111', title:'Bike delivery', description:'Deliver small parcels', category:'Delivery', pay:200, location_text:'Jaipur', expires_at: new Date(Date.now()+2*86400000).toISOString(), created_at:new Date().toISOString() },
-      { id: uid(), poster_id:'b1111111-1111', title:'Fix roof leak', description:'Repair small rooftop leak', category:'Repairs', pay:1200, location_text:'Jaipur', expires_at: new Date(Date.now()+6*86400000).toISOString(), created_at:new Date().toISOString() },
-    ];
-    localStorage.setItem(STORAGE_KEYS.JOBS, JSON.stringify(jobs));
+  if(!store.get(KEYS.JOBS)){
+    store.set(KEYS.JOBS, [
+      { id:uid(), poster_id:'u_ramesh', title:'Paint shop wall', main_category:'Painter', description:'Paint 200 sq ft shop, 1 day', pay:1500, location:'Jaipur', created_at:Date.now() },
+      { id:uid(), poster_id:'u_ramesh', title:'Fix bike engine', main_category:'Mechanic', description:'Repair carburetor', pay:900, location:'Alwar', created_at:Date.now() }
+    ]);
   }
-  if (!localStorage.getItem(STORAGE_KEYS.APPS)) localStorage.setItem(STORAGE_KEYS.APPS, JSON.stringify([]));
-  if (!localStorage.getItem(STORAGE_KEYS.PAYMENTS)) localStorage.setItem(STORAGE_KEYS.PAYMENTS, JSON.stringify([]));
+  if(!store.get(KEYS.APPS)) store.set(KEYS.APPS, []);
+  if(!store.get(KEYS.PAYMENTS)) store.set(KEYS.PAYMENTS, []);
+  if(!store.get(KEYS.NOTIFS)) store.set(KEYS.NOTIFS, {});
 }
 
-// ---------- Storage helpers ----------
-const storage = {
-  get(key){ const v = localStorage.getItem(key); return v? JSON.parse(v): null; },
-  set(key, value){ localStorage.setItem(key, JSON.stringify(value)); }
-};
-
-// ---------- Auth / Session ----------
-function currentSession(){ return storage.get(STORAGE_KEYS.SESSION); }
-function currentUser(){
-  const s = currentSession();
-  if(!s) return null;
-  const users = storage.get(STORAGE_KEYS.USERS) || [];
-  return users.find(u=>u.id===s.userId) || null;
-}
+// ---------------- session & auth ----------------
+function currentSession(){ return store.get(KEYS.SESSION); }
+function currentUser(){ const s = currentSession(); if(!s) return null; const users = store.get(KEYS.USERS)||[]; return users.find(u=>u.id===s.userId) || null; }
 
 function createOrGetUserByPhone(phone){
-  const users = storage.get(STORAGE_KEYS.USERS) || [];
-  const found = users.find(u=>u.phone === phone);
-  if(found) return found;
-  const newUser = { id: uid(), phone };
-  users.push(newUser);
-  storage.set(STORAGE_KEYS.USERS, users);
-  // create profile row
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-  profiles[newUser.id] = { id:newUser.id, full_name: phone, phone, role:'seeker', wallet_balance:0 };
-  storage.set(STORAGE_KEYS.PROFILES, profiles);
-  return newUser;
+  let users = store.get(KEYS.USERS)||[];
+  let u = users.find(x=>x.phone===phone);
+  if(u) return u;
+  u = { id: 'u_'+uid(), phone };
+  users.push(u);
+  store.set(KEYS.USERS, users);
+  // create default profile
+  const profiles = store.get(KEYS.PROFILES)||{};
+  profiles[u.id] = { id:u.id, full_name: phone, phone, role:'seeker', categories:[], wallet_balance:0, subscription:{active:false,next_due:null} };
+  store.set(KEYS.PROFILES, profiles);
+  return u;
 }
 
-// session sign in
 function signInByPhone(phone){
   const user = createOrGetUserByPhone(phone);
-  storage.set(STORAGE_KEYS.SESSION, { userId: user.id });
-  // ensure profile exists
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-  if(!profiles[user.id]) profiles[user.id] = { id:user.id, full_name: phone, phone, role: 'seeker', wallet_balance:0 };
-  storage.set(STORAGE_KEYS.PROFILES, profiles);
+  store.set(KEYS.SESSION, { userId: user.id });
   renderApp();
 }
 
-// sign out
 function signOut(){
-  localStorage.removeItem(STORAGE_KEYS.SESSION);
+  localStorage.removeItem(KEYS.SESSION);
   renderApp();
 }
 
-// ---------- App UI / Routing ----------
+// ---------------- notifications ----------------
+function notifyUsersForCategory(category, job){
+  const profiles = store.get(KEYS.PROFILES) || {};
+  const notifs = store.get(KEYS.NOTIFS) || {};
+  Object.values(profiles).forEach(profile => {
+    if(!profile.categories || profile.categories.length===0) return;
+    if(profile.categories.includes(category) && profile.subscription && profile.subscription.active){
+      const arr = notifs[profile.id] || [];
+      arr.unshift({ id:uid(), text:`New ${category} job: ${job.title} • ₹${job.pay}`, job_id: job.id, ts: Date.now(), read:false });
+      notifs[profile.id] = arr;
+    }
+  });
+  store.set(KEYS.NOTIFS, notifs);
+}
+
+// ---------------- UI Rendering ----------------
 const navEl = $('#nav');
 const appEl = $('#app');
 const otpModal = $('#otpModal');
-const otpPhoneSpan = $('#otpPhone');
-const otpInput = $('#otpInput');
+const subModal = $('#subModal');
+const notifModal = $('#notifModal');
 
-let pendingOtpPhone = null;
-let pendingSelectedRole = 'seeker';
-
-// Setup nav buttons
+// render nav
 function renderNav(){
-  const user = currentUser();
   navEl.innerHTML = '';
+  const user = currentUser();
   if(user){
-    const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-    const p = profiles[user.id];
-    const label = p?.full_name ? p.full_name : (user.phone || 'Me');
+    const profiles = store.get(KEYS.PROFILES)||{};
+    const prof = profiles[user.id] || {};
+    const notifs = (store.get(KEYS.NOTIFS)||{})[user.id] || [];
+    const unread = notifs.filter(n=>!n.read).length;
     navEl.innerHTML = `
-      <div class="row">
-        <div class="chip">${label}</div>
+      <div class="row" style="align-items:center">
+        <div class="small muted" style="margin-right:12px">Hi, <strong>${prof.full_name || prof.phone || 'User'}</strong></div>
         <button class="ghost" id="navJobs">Find Jobs</button>
         <button class="ghost" id="navPost">Post Job</button>
-        <button class="ghost" id="navWallet">Wallet</button>
+        <button class="ghost" id="navProfile">Profile</button>
+        <button class="ghost" id="navNotif">Notifications ${unread?'<span class="notif-badge">'+unread+'</span>':''}</button>
+        <button class="ghost" id="navSub">Subscription</button>
         <button class="danger" id="navSignOut">Sign Out</button>
       </div>
     `;
-    $('#navSignOut').onclick = signOut;
-    $('#navJobs').onclick = ()=>route('jobs');
-    $('#navPost').onclick = ()=>route('post');
-    $('#navWallet').onclick = ()=>route('wallet');
+    $('#navJobs').onclick = ()=> route('jobs');
+    $('#navPost').onclick = ()=> route('post');
+    $('#navProfile').onclick = ()=> route('profile');
+    $('#navNotif').onclick = ()=> openNotifications();
+    $('#navSub').onclick = ()=> openSubscription();
+    $('#navSignOut').onclick = ()=> signOut();
   } else {
     navEl.innerHTML = `<button id="navLogin">Login / Signup</button>`;
-    $('#navLogin').onclick = ()=>route('login');
+    $('#navLogin').onclick = ()=> route('login');
   }
 }
 
-// Basic router: login, dashboard, jobs (list), post, wallet, profile
+// simple router
 function route(page){
   window.location.hash = page;
   renderApp();
@@ -238,438 +254,330 @@ function route(page){
 function renderApp(){
   renderNav();
   const page = (window.location.hash || '#').replace('#','') || 'login';
-  if(!currentUser() && page !== 'login') {
-    route('login');
-    return;
-  }
-  if(page === 'login') renderLogin();
-  else if(page === 'jobs') renderJobs();
-  else if(page === 'post') renderPostJob();
-  else if(page === 'wallet') renderWallet();
-  else if(page === 'dashboard') renderDashboard();
-  else if(page === 'profile') renderProfile();
-  else renderLogin();
+  if(!currentUser() && page!=='login') { route('login'); return; }
+  if(page==='login') renderLogin();
+  else if(page==='jobs') renderJobs();
+  else if(page==='post') renderPostJob();
+  else if(page==='profile') renderProfile();
+  else if(page==='subscription') renderSubscription();
+  else renderJobs();
 }
 
-// ---------- Pages ----------
+// Login page
 function renderLogin(){
   appEl.innerHTML = `
-    <div class="card" style="max-width:720px;margin:auto">
-      <div style="display:flex;gap:12px;align-items:center">
-        <div style="flex:1">
-          <h2>Login / Signup (OTP)</h2>
-          <p class="muted small">Enter your phone number. OTP is simulated for preview. Use 123456 or Auto-verify.</p>
-          <div style="margin-top:10px" class="grid grid-cols-3">
-            <div><input id="phoneInput" placeholder="9876543210" /></div>
-            <div>
-              <select id="roleSelect">
-                <option value="seeker">Job Seeker</option>
-                <option value="poster">Job Poster</option>
-              </select>
-            </div>
-            <div><button id="sendOtp">Send OTP</button></div>
-          </div>
-        </div>
-        <div style="width:260px">
-          <div class="card center">
-            <strong>Demo accounts</strong>
-            <p class="small-muted" style="margin-top:6px">Use seeded demo numbers:</p>
-            <div style="display:flex;flex-direction:column;gap:6px;margin-top:8px">
-              <button class="ghost" data-phone="+919876543210">Ramesh (poster)</button>
-              <button class="ghost" data-phone="+919812345678">Manish (seeker)</button>
-              <button class="ghost" data-phone="+919700000000">Sita (seeker)</button>
-            </div>
-          </div>
-        </div>
+    <div class="card" style="max-width:900px;margin:auto">
+      <h2>Login / Signup (OTP demo)</h2>
+      <div class="row" style="margin-top:8px">
+        <input id="phoneInput" placeholder="Enter 10-digit phone (e.g. 9876543210)" />
+        <select id="roleSelect"><option value="seeker">Job Seeker</option><option value="poster">Job Poster</option></select>
+        <button id="sendOtp">Send OTP</button>
+      </div>
+      <div style="margin-top:10px" class="small muted">Demo seeded users: Ramesh (poster), Manish (seeker), Sita (seeker). Use seeded numbers or any number to create a demo account.</div>
+      <div style="margin-top:8px">
+        <button class="ghost" data-phone="+919876543210">Use Ramesh (poster)</button>
+        <button class="ghost" data-phone="+919812345678">Use Manish (seeker)</button>
+        <button class="ghost" data-phone="+919700000000">Use Sita (seeker)</button>
       </div>
     </div>
   `;
-  // handlers
   $('#sendOtp').onclick = ()=>{
     const phoneRaw = $('#phoneInput').value.trim();
     if(!phoneRaw){ alert('Enter phone'); return; }
-    const phone = phoneRaw.startsWith('+')?phoneRaw:'+91'+phoneRaw.replace(/^0+/, '');
-    pendingOtpPhone = phone;
-    pendingSelectedRole = $('#roleSelect').value;
-    otpPhoneSpan.textContent = phone;
-    otpInput.value = '';
-    otpModal.classList.remove('hidden');
-    otpModal.setAttribute('aria-hidden','false');
+    const phone = phoneRaw.startsWith('+')?phoneRaw:('+91'+phoneRaw.replace(/^0+/, ''));
+    // store selected role in temp so we can set profile role after OTP verify
+    window.pendingRole = $('#roleSelect').value;
+    window.pendingPhone = phone;
+    otpModal.classList.remove('hidden'); otpModal.setAttribute('aria-hidden','false');
   };
-  // demo preset handlers
-  $$('.ghost[data-phone]').forEach(btn=> btn.onclick = (e)=> {
+  $$('button[data-phone]').forEach(b => b.onclick = e => {
     const phone = e.target.getAttribute('data-phone');
     $('#phoneInput').value = phone.replace('+91','');
   });
 }
 
-function renderDashboard(){
-  appEl.innerHTML = `
-    <div>
-      <div class="card">
-        <h2>Dashboard</h2>
-        <p class="small-muted">Quick links and stats.</p>
-        <div style="display:flex;gap:12px;margin-top:12px">
-          <div class="card" style="flex:1"><strong id="statJobs">0</strong><div class="small-muted">Jobs available</div></div>
-          <div class="card" style="flex:1"><strong id="statApps">0</strong><div class="small-muted">Applications</div></div>
-          <div class="card" style="flex:1"><strong id="statBalance">₹0</strong><div class="small-muted">Your balance</div></div>
-        </div>
-      </div>
-
-      <div class="grid" style="grid-template-columns:1fr 340px;gap:12px;margin-top:12px">
-        <div>
-          <div class="card">
-            <h3>Nearby Jobs</h3>
-            <div id="dashJobs"></div>
-          </div>
-        </div>
-        <div>
-          <div class="card">
-            <h4>Your Profile</h4>
-            <div id="dashProfile"></div>
-            <div style="margin-top:8px"><button class="ghost" onclick="route('profile')">View full profile</button></div>
-          </div>
-          <div class="card" style="margin-top:12px">
-            <h4>Quick Actions</h4>
-            <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
-              <button class="ghost" onclick="route('jobs')">Find Jobs</button>
-              <button class="ghost" onclick="route('post')">Post Job</button>
-              <button class="ghost" onclick="route('wallet')">Wallet</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  const jobs = storage.get(STORAGE_KEYS.JOBS)||[];
-  $('#statJobs').textContent = jobs.length;
-  const apps = storage.get(STORAGE_KEYS.APPS)||[];
-  $('#statApps').textContent = apps.length;
-  const user = currentUser();
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-  const p = profiles[user.id];
-  $('#statBalance').textContent = `₹${(p?.wallet_balance||0)}`;
-  // profile snippet
-  $('#dashProfile').innerHTML = `
-    <div><strong>${p?.full_name||p?.phone||'You'}</strong></div>
-    <div class="small-muted">Role: ${p?.role}</div>
-    <div class="small-muted">Phone: ${p?.phone}</div>
-  `;
-  // jobs
-  const container = $('#dashJobs');
-  container.innerHTML = '';
-  jobs.slice(0,6).forEach(job=>{
-    const el = document.createElement('div'); el.className='job'; 
-    el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:start">
-      <div><strong>${job.title}</strong><div class="small-muted">${job.category} • ${job.location_text}</div><div style="margin-top:6px">${job.description}</div></div>
-      <div style="text-align:right"><div class="pill">₹${job.pay}</div><div class="small-muted" style="margin-top:6px">Expires ${new Date(job.expires_at).toLocaleDateString()}</div></div>
-    </div>
-    <div class="actions"><button class="ghost" onclick="viewJob('${job.id}')">View</button><button class="green" onclick="openApply('${job.id}')">Apply</button></div>`;
-    container.appendChild(el);
-  });
-}
-
+// Jobs page (view)
 function renderJobs(){
-  const jobs = storage.get(STORAGE_KEYS.JOBS)||[];
+  const jobs = store.get(KEYS.JOBS) || [];
   appEl.innerHTML = `
     <div>
-      <div class="card">
-        <h2>Find Jobs</h2>
-        <div class="small-muted">Browse recent job listings near you (demo).</div>
-      </div>
-      <div class="grid" style="grid-template-columns:1fr 320px;gap:12px;margin-top:12px">
-        <div>
-          <div id="jobsList" class="card"></div>
+      <div class="card"><h2>Find Jobs</h2><div class="small muted">Browse and apply (application requires active subscription).</div></div>
+      <div style="display:flex;gap:12px;margin-top:12px">
+        <div style="flex:1">
+          <div class="card" id="jobsList"></div>
         </div>
-        <div>
-          <div class="card">
-            <h4>Filters</h4>
-            <div style="margin-top:8px">
-              <input id="filterText" placeholder="Search title, category, location" />
-              <div style="margin-top:8px"><button id="applyFilter" class="ghost">Apply</button></div>
-            </div>
+        <div style="width:320px">
+          <div class="card"><h4>Filters</h4>
+            <label>Main category</label>
+            <select id="filterCategory"><option value="">All</option>${CATEGORIES.map(c=>`<option>${c}</option>`).join('')}</select>
+            <div style="margin-top:8px"><button id="applyFilter" class="ghost">Apply</button></div>
           </div>
-          <div class="card" style="margin-top:12px">
-            <h4>Seeded Jobs</h4>
-            <div class="small-muted">Demo data loaded</div>
-          </div>
+          <div class="card" style="margin-top:12px"><h4>Legend</h4><div class="small muted">Only subscribed users receive notifications when jobs in their categories are posted.</div></div>
         </div>
       </div>
     </div>
   `;
-  function listJobs(filter=''){
+  function list(catFilter=''){
     const container = $('#jobsList');
     container.innerHTML = '';
-    let out = jobs.slice().sort((a,b)=> new Date(b.created_at)-new Date(a.created_at));
-    if(filter) out = out.filter(j=> (j.title+ ' ' + j.description + ' ' + j.category + ' ' + j.location_text).toLowerCase().includes(filter.toLowerCase()));
-    out.forEach(job=>{
-      const el = document.createElement('div'); el.className='job'; 
-      el.innerHTML = `<div style="display:flex;justify-content:space-between">
-        <div>
-          <strong>${job.title}</strong><div class="small-muted">${job.category} • ${job.location_text}</div>
-          <div style="margin-top:8px">${job.description}</div>
-        </div>
-        <div style="text-align:right"><div class="pill">₹${job.pay}</div><div class="small-muted" style="margin-top:6px">Expires ${new Date(job.expires_at).toLocaleDateString()}</div></div>
+    let list = jobs.slice().sort((a,b)=>b.created_at-a.created_at);
+    if(catFilter) list = list.filter(j=>j.main_category===catFilter);
+    if(list.length===0) container.innerHTML = '<div class="small muted">No jobs</div>';
+    list.forEach(j=>{
+      const el = document.createElement('div'); el.className='job';
+      el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:start">
+        <div><strong>${j.title}</strong><div class="small muted">${j.main_category} • ${j.location}</div><div style="margin-top:6px">${j.description}</div></div>
+        <div style="text-align:right"><div class="pill">₹${j.pay}</div><div class="small muted" style="margin-top:6px">${new Date(j.created_at).toLocaleString()}</div></div>
       </div>
-      <div class="actions"><button class="ghost" onclick="viewJob('${job.id}')">View</button><button class="green" onclick="openApply('${job.id}')">Apply</button></div>`;
+      <div style="margin-top:8px" class="row">
+        <button class="ghost" onclick="viewJob('${j.id}')">View</button>
+        <button class="green" onclick="attemptApply('${j.id}')">Apply</button>
+      </div>`;
       container.appendChild(el);
     });
   }
-  listJobs();
-  $('#applyFilter').onclick = ()=> listJobs($('#filterText').value.trim());
+  list('');
+  $('#applyFilter').onclick = ()=> list($('#filterCategory').value);
 }
 
+// Post job page (asks main category)
 function renderPostJob(){
+  const user = currentUser();
+  const profiles = store.get(KEYS.PROFILES)||{};
+  const prof = profiles[user.id];
   appEl.innerHTML = `
-    <div class="card" style="max-width:720px;margin:auto">
+    <div class="card" style="max-width:900px;margin:auto">
       <h2>Post a Job</h2>
-      <p class="small-muted">Create a job listing. You must be a Poster.</p>
-      <div style="margin-top:10px">
-        <input id="jobTitle" placeholder="Title" />
-        <textarea id="jobDesc" placeholder="Description" style="margin-top:8px"></textarea>
-        <div style="display:flex;gap:8px;margin-top:8px">
-          <input id="jobCategory" placeholder="Category" />
-          <input id="jobPay" placeholder="Pay (₹)" type="number" />
+      <p class="small muted">You must provide the <strong>Main Category</strong> (this is used to notify matching workers).</p>
+      <div style="display:grid;gap:8px;margin-top:8px">
+        <label>Title</label><input id="jobTitle" />
+        <label>Description</label><textarea id="jobDesc"></textarea>
+        <div style="display:flex;gap:8px">
+          <div style="flex:1"><label>Main Category</label><select id="jobCategory">${CATEGORIES.map(c=>`<option>${c}</option>`).join('')}</select></div>
+          <div style="width:140px"><label>Pay (₹)</label><input id="jobPay" type="number" /></div>
         </div>
-        <input id="jobLocation" placeholder="Location (village / city)" style="margin-top:8px" />
-        <div style="margin-top:12px"><button id="postJobBtn">Post Job</button></div>
+        <label>Location</label><input id="jobLocation" placeholder="Village / City" />
+        <div style="margin-top:8px"><button id="postJobBtn">Post Job & Notify</button></div>
       </div>
     </div>
   `;
   $('#postJobBtn').onclick = ()=>{
     const title = $('#jobTitle').value.trim();
     const desc = $('#jobDesc').value.trim();
-    const category = $('#jobCategory').value.trim() || 'General';
+    const mainCat = $('#jobCategory').value;
     const pay = Number($('#jobPay').value) || 0;
-    const location_text = $('#jobLocation').value.trim() || 'Local';
-    if(!title || !desc){ alert('Please add title and description'); return; }
-    const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
-    const user = currentUser();
-    const newJob = { id: uid(), poster_id: user.id, title, description: desc, category, pay, location_text, created_at: new Date().toISOString(), expires_at: new Date(Date.now()+7*86400000).toISOString() };
-    jobs.unshift(newJob);
-    storage.set(STORAGE_KEYS.JOBS, jobs);
-    alert('Job posted!');
+    const loc = $('#jobLocation').value.trim() || 'Local';
+    if(!title || !desc || !mainCat){ alert('Please fill title, description and main category'); return; }
+    const jobs = store.get(KEYS.JOBS)||[];
+    const newJob = { id:uid(), poster_id: user.id, title, description:desc, main_category:mainCat, pay, location:loc, created_at: Date.now() };
+    jobs.unshift(newJob); store.set(KEYS.JOBS, jobs);
+    // create notifications for subscribed users in that category
+    notifyUsersForCategory(mainCat, newJob);
+    alert(`Job posted and notifications sent to subscribed ${mainCat} workers (demo).`);
     route('jobs');
   };
 }
 
-function renderWallet(){
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-  const user = currentUser();
-  const p = profiles[user.id];
-  appEl.innerHTML = `
-    <div class="card" style="max-width:720px;margin:auto">
-      <h2>Wallet</h2>
-      <div style="display:flex;gap:12px;margin-top:12px">
-        <div style="flex:1">
-          <div class="card">
-            <div class="row"><div><strong>Balance</strong></div><div class="spacer"></div><div>₹${p.wallet_balance || 0}</div></div>
-            <div style="margin-top:8px" class="small-muted">You can simulate sending payment for a job. Commission 5% will be taken by OddJobber (demo).</div>
-          </div>
-          <div style="margin-top:12px" class="card">
-            <h4>Pay for a Job (demo)</h4>
-            <div style="display:flex;gap:8px">
-              <select id="payJobSelect"></select>
-              <button id="payForJob" class="green">Pay</button>
-            </div>
-          </div>
-        </div>
-        <div style="width:320px">
-          <div class="card">
-            <h4>Payments</h4>
-            <div id="paymentsList" class="small-muted"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
-  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
-  const paySel = $('#payJobSelect');
-  paySel.innerHTML = jobs.map(j=>`<option value="${j.id}">${j.title} — ₹${j.pay} • ${j.location_text}</option>`).join('');
-  $('#payForJob').onclick = ()=> {
-    const jobId = paySel.value;
-    if(!jobId){ alert('Select job'); return; }
-    openUPIModal(jobId);
-  };
-  refreshPayments();
-}
-
+// Profile page: set categories and check subscription
 function renderProfile(){
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
   const user = currentUser();
-  const p = profiles[user.id];
+  const profiles = store.get(KEYS.PROFILES)||{};
+  const prof = profiles[user.id];
   appEl.innerHTML = `
-    <div class="card" style="max-width:720px;margin:auto">
+    <div class="card" style="max-width:900px;margin:auto">
       <h2>Profile</h2>
       <div style="display:flex;gap:12px">
         <div style="flex:1">
-          <input id="profileName" value="${p.full_name || ''}" />
-          <div style="display:flex;gap:8px;margin-top:8px">
-            <input id="profilePhone" value="${p.phone || ''}" />
-            <select id="profileRole">
-              <option ${p.role==='seeker'?'selected':''} value="seeker">Seeker</option>
-              <option ${p.role==='poster'?'selected':''} value="poster">Poster</option>
-            </select>
+          <label>Full name</label><input id="pf_name" value="${escapeHtml(prof.full_name||'')}" />
+          <label style="margin-top:8px">Phone</label><input id="pf_phone" value="${escapeHtml(prof.phone||'')}" />
+          <label style="margin-top:8px">Role</label>
+          <select id="pf_role"><option value="seeker"${prof.role==='seeker'?' selected':''}>Seeker</option><option value="poster"${prof.role==='poster'?' selected':''}>Poster</option></select>
+          <div style="margin-top:8px"><label>Worker categories (select multiple if you do many)</label>
+            <div style="height:120px;overflow:auto;border:1px solid #eef2ff;padding:8px;border-radius:8px" id="catsBox"></div>
           </div>
-          <div style="margin-top:10px">
-            <button id="saveProfile" class="green">Save</button>
+          <div style="margin-top:8px" class="row">
+            <button id="saveProfile" class="green">Save Profile</button>
+            <div class="sp"></div>
+            <button id="openSubNow" class="ghost">Subscription</button>
           </div>
         </div>
-        <div style="width:260px">
-          <div class="card small-muted">User ID: ${p.id}</div>
+        <div style="width:300px">
+          <div class="card"><strong>Balance</strong><div class="small muted">₹${prof.wallet_balance||0}</div></div>
+          <div class="card" style="margin-top:10px"><strong>Subscription</strong><div class="small muted" id="subInfo"></div></div>
         </div>
       </div>
     </div>
   `;
+  // populate categories checkboxes
+  const box = $('#catsBox');
+  box.innerHTML = CATEGORIES.map(c=>{
+    const checked = prof.categories && prof.categories.includes(c);
+    return `<div><label><input type="checkbox" data-cat="${escapeHtml(c)}" ${checked?'checked':''}/> ${escapeHtml(c)}</label></div>`;
+  }).join('');
   $('#saveProfile').onclick = ()=>{
-    const name = $('#profileName').value.trim();
-    const phone = $('#profilePhone').value.trim();
-    const role = $('#profileRole').value;
-    const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-    profiles[user.id] = {...profiles[user.id], full_name:name || profiles[user.id].full_name, phone:phone || profiles[user.id].phone, role};
-    storage.set(STORAGE_KEYS.PROFILES, profiles);
+    const name = $('#pf_name').value.trim();
+    const phone = $('#pf_phone').value.trim();
+    const role = $('#pf_role').value;
+    const selected = Array.from(box.querySelectorAll('input[type=checkbox]:checked')).map(i=>i.getAttribute('data-cat'));
+    prof.full_name = name || prof.full_name;
+    prof.phone = phone || prof.phone;
+    prof.role = role;
+    prof.categories = selected;
+    const profiles = store.get(KEYS.PROFILES)||{};
+    profiles[user.id] = prof;
+    store.set(KEYS.PROFILES, profiles);
     alert('Profile saved');
     renderNav();
   };
+  $('#openSubNow').onclick = openSubscription;
+  // sub info
+  const subInfo = $('#subInfo');
+  if(prof.subscription && prof.subscription.active){
+    subInfo.innerHTML = `Active • Next due: ${new Date(prof.subscription.next_due).toLocaleString()}`;
+  } else {
+    subInfo.innerHTML = `Not active • <button id="subNowBtn" class="ghost">Subscribe ₹150</button>`;
+    $('#subNowBtn').onclick = openSubscription;
+  }
 }
 
-// ---------- Job view / apply ----------
+// Subscription modal open
+function openSubscription(){
+  subModal.classList.remove('hidden'); subModal.setAttribute('aria-hidden','false');
+}
+
+// perform simulated payment for subscription
+$('#paySub')?.addEventListener?.('click', ()=> {
+  const user = currentUser(); if(!user) { alert('Sign in first'); return; }
+  const profiles = store.get(KEYS.PROFILES)||{}; const prof = profiles[user.id];
+  // Simulate charging 150
+  const payments = store.get(KEYS.PAYMENTS)||[]; payments.unshift({ id:uid(), type:'subscription', user_id:user.id, amount:150, ts:Date.now() }); store.set(KEYS.PAYMENTS, payments);
+  // activate subscription
+  const nextDue = Date.now() + 30*24*3600*1000; // +30 days
+  prof.subscription = { active:true, next_due: nextDue };
+  profiles[user.id] = prof; store.set(KEYS.PROFILES, profiles);
+  alert('Subscription activated (demo). You will receive category notifications now.');
+  subModal.classList.add('hidden'); subModal.setAttribute('aria-hidden','true');
+  renderApp();
+});
+
+// subscription modal close
+$('#closeSub')?.addEventListener?.('click', ()=> { subModal.classList.add('hidden'); subModal.setAttribute('aria-hidden','true'); });
+
+// Notifications modal open
+function openNotifications(){
+  const user = currentUser(); if(!user) return alert('Login first');
+  notifModal.classList.remove('hidden'); notifModal.setAttribute('aria-hidden','false');
+  renderNotifications();
+}
+$('#closeNotif')?.addEventListener?.('click', ()=> { notifModal.classList.add('hidden'); notifModal.setAttribute('aria-hidden','true'); });
+$('#clearNotif')?.addEventListener?.('click', ()=> { store.set(KEYS.NOTIFS, { ...(store.get(KEYS.NOTIFS)||{}) , [currentUser().id]: [] }); renderNotifications(); });
+
+// render notifications for current user
+function renderNotifications(){
+  const user = currentUser(); if(!user) return;
+  const notifs = (store.get(KEYS.NOTIFS)||{})[user.id] || [];
+  const listEl = $('#notifList');
+  if(!listEl) return;
+  if(notifs.length===0) listEl.innerHTML = '<div class="small muted">No notifications</div>';
+  else listEl.innerHTML = notifs.map(n=>`<div style="padding:8px;border-bottom:1px solid #f1f5f9"><div><strong>${escapeHtml(n.text)}</strong></div><div class="small muted">${fmtDate(n.ts)}</div></div>`).join('');
+  // mark as read (simple)
+  const all = store.get(KEYS.NOTIFS)||{}; if(all[user.id]) all[user.id] = all[user.id].map(x=>({...x, read:true})); store.set(KEYS.NOTIFS, all); renderNav();
+}
+
+// view a job (simple)
 function viewJob(jobId){
-  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
-  const job = jobs.find(j=>j.id===jobId);
-  if(!job) return alert('Job not found');
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-  const poster = profiles[job.poster_id];
-  appEl.innerHTML = `
-    <div class="card" style="max-width:820px;margin:auto">
-      <div style="display:flex;justify-content:space-between">
-        <div><h2>${job.title}</h2><div class="small-muted">${job.category} • ${job.location_text}</div></div>
-        <div style="text-align:right"><div class="pill">₹${job.pay}</div><div class="small-muted">Expires ${new Date(job.expires_at).toLocaleDateString()}</div></div>
-      </div>
-      <div style="margin-top:12px">${job.description}</div>
-      <div style="margin-top:12px" class="small-muted">Posted by: ${poster?.full_name || poster?.phone || 'Unknown'}</div>
-      <div style="margin-top:12px" class="actions">
-        <button class="green" onclick="openApply('${job.id}')">Apply</button>
-        <button class="ghost" onclick="route('jobs')">Back to list</button>
-      </div>
-    </div>
-  `;
+  const jobs = store.get(KEYS.JOBS)||[]; const j = jobs.find(x=>x.id===jobId); if(!j) return alert('Job not found');
+  appEl.innerHTML = `<div class="card" style="max-width:900px;margin:auto">
+    <div style="display:flex;justify-content:space-between"><div><h2>${escapeHtml(j.title)}</h2><div class="small muted">${escapeHtml(j.main_category)} • ${escapeHtml(j.location)}</div></div><div class="pill">₹${j.pay}</div></div>
+    <div style="margin-top:10px">${escapeHtml(j.description)}</div>
+    <div style="margin-top:12px" class="row"><button class="green" onclick="attemptApply('${j.id}')">Apply</button><button class="ghost" onclick="route('jobs')">Back</button></div>
+  </div>`;
 }
 
-function openApply(jobId){
-  const message = prompt('Write a short message to the poster (demo):', 'I can do this job today.');
-  if(message === null) return;
+// attempt to apply: require subscription if current user is seeker
+function attemptApply(jobId){
   const user = currentUser();
-  const apps = storage.get(STORAGE_KEYS.APPS) || [];
-  apps.push({ id: uid(), job_id: jobId, seeker_id: user.id, message, status: 'pending', created_at: new Date().toISOString()});
-  storage.set(STORAGE_KEYS.APPS, apps);
-  alert('Application sent (demo). Poster will be notified in a real app.');
+  if(!user) return alert('Login first');
+  const profiles = store.get(KEYS.PROFILES)||{}; const prof = profiles[user.id];
+  if(prof.role !== 'seeker') return alert('Only Job Seekers can apply. Change role in profile.');
+  // check subscription
+  if(!prof.subscription || !prof.subscription.active){
+    if(confirm('You need an active subscription (₹150/month) to apply and receive notifications. Subscribe now?')){
+      openSubscription(); return;
+    } else return;
+  }
+  const msg = prompt('Write a short message to the poster (demo):','I can do this job');
+  if(msg===null) return;
+  const apps = store.get(KEYS.APPS)||[]; apps.unshift({ id:uid(), job_id:jobId, seeker_id:user.id, message:msg, ts:Date.now(), status:'applied' }); store.set(KEYS.APPS, apps);
+  alert('Application sent (demo).');
   route('jobs');
 }
 
-// ---------- UPI mock flow ----------
-function openUPIModal(jobId){
-  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
-  const job = jobs.find(j=>j.id===jobId);
-  if(!job) return alert('Job not found');
-  $('#upiModal').classList.remove('hidden'); $('#upiModal').setAttribute('aria-hidden','false');
-  $('#upiJobTitle').textContent = job.title;
-  $('#upiJobAmount').textContent = `₹${job.pay}`;
-  const commission = Math.round(job.pay * 0.05);
-  $('#upiCommission').textContent = `₹${commission} (5%)`;
-  $('#upiModal').dataset.jobId = jobId;
-  $('#upiId').value = '';
-}
+// Post-job notification logic handled when posting job (see renderPostJob)
 
-$('#cancelPay').onclick = ()=> { $('#upiModal').classList.add('hidden'); $('#upiModal').setAttribute('aria-hidden','true'); };
+// Profile helper: escape HTML
+function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 
-$('#confirmPay').onclick = ()=>{
-  const jobId = $('#upiModal').dataset.jobId;
-  const upi = $('#upiId').value.trim();
-  const jobs = storage.get(STORAGE_KEYS.JOBS) || [];
-  const job = jobs.find(j=>j.id===jobId);
-  if(!job) return alert('Job missing');
-  if(!upi) return alert('Enter UPI ID (demo)');
-  // simulate payment success
-  const commission = Math.round(job.pay * 0.05);
-  const seekerAmount = job.pay - commission;
-  // record payment
-  const payments = storage.get(STORAGE_KEYS.PAYMENTS) || [];
-  const payRecord = { id: uid(), job_id: job.id, poster_id: currentUser().id, seeker_id: job.poster_id, amount: job.pay, commission, upi, status:'SUCCESS', created_at: new Date().toISOString() };
-  payments.unshift(payRecord);
-  storage.set(STORAGE_KEYS.PAYMENTS, payments);
-  // update balances: subtract from poster's wallet (if poster), add to seeker's wallet
-  const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-  // in demo, poster may be current user (paying) or not - for simplicity, if current user is poster we'll subtract; else we won't
-  const current = currentUser();
-  if(profiles[current.id]) profiles[current.id].wallet_balance = Math.max(0,(profiles[current.id].wallet_balance||0) - job.pay);
-  // The payment is to job.poster_id (the seeker in our simplified demo flows where poster posts job and seekers apply). 
-  // For demo we credit the poster's wallet? Wait — correct flow: Poster posts job; seeker does job; poster pays seeker.
-  // Here, job.poster_id is the poster; we should credit seeker, but we don't have seeker selection in pay flow (simple demo: credit the first seeker who applied or credit a demo seeker)
-  // We'll credit a seeker if there's an application; else credit "Manish" seeded user as a demo seeker.
-  const apps = storage.get(STORAGE_KEYS.APPS) || [];
-  const appForJob = apps.find(a=>a.job_id===job.id);
-  let creditedSeekerId = appForJob ? appForJob.seeker_id : 'c2222222-2222'; // default demo seeker
-  // credit seeker
-  if(!profiles[creditedSeekerId]) profiles[creditedSeekerId] = { id:creditedSeekerId, full_name:'Demo Seeker', phone:'', role:'seeker', wallet_balance:0 };
-  profiles[creditedSeekerId].wallet_balance = (profiles[creditedSeekerId].wallet_balance || 0) + seekerAmount;
-  // store commission record (simple)
-  const commissionRecords = storage.get(STORAGE_KEYS.PAYMENTS) || [];
-  storage.set(STORAGE_KEYS.PAYMENTS, payments);
-  storage.set(STORAGE_KEYS.PROFILES, profiles);
-  $('#upiModal').classList.add('hidden'); $('#upiModal').setAttribute('aria-hidden','true');
-  alert(`Payment simulated!\nTotal: ₹${job.pay}\nCommission(5%): ₹${commission}\nCredited seeker: ₹${seekerAmount}`);
-  renderWallet();
-};
-
-// refresh payments list in wallet
-function refreshPayments(){
-  const payments = storage.get(STORAGE_KEYS.PAYMENTS) || [];
-  $('#paymentsList').innerHTML = payments.slice(0,6).map(p=>`<div style="padding:8px;border-bottom:1px solid #f1f5f9"><div><strong>₹${p.amount}</strong> • ${p.status}</div><div class="small-muted">Job ${p.job_id} • ${new Date(p.created_at).toLocaleString()}</div></div>`).join('') || '<div class="small-muted">No payments yet</div>';
-}
-
-// ---------- OTP modal handlers ----------
+// ---------------- OTP modal handlers ----------------
 $('#verifyOtp').onclick = ()=> {
-  const code = otpInput.value.trim();
-  if(code === '123456') {
-    // sign in
-    signInByPhone(pendingOtpPhone);
+  const code = $('#otpInput').value.trim();
+  if(code === '123456'){
+    const phone = window.pendingPhone || '+919999999999';
+    // create or get user
+    const user = createOrGetUserByPhone(phone);
+    // create profile if not exists and set role from pendingRole
+    const profiles = store.get(KEYS.PROFILES)||{};
+    profiles[user.id] = profiles[user.id] || { id:user.id, full_name:phone, phone, role: window.pendingRole || 'seeker', categories:[], wallet_balance:0, subscription:{active:false,next_due:null} };
+    profiles[user.id].role = window.pendingRole || profiles[user.id].role;
+    store.set(KEYS.PROFILES, profiles);
+    // set session
+    store.set(KEYS.SESSION, { userId: user.id });
     otpModal.classList.add('hidden'); otpModal.setAttribute('aria-hidden','true');
-    alert('OTP verified (demo). Profile created automatically (if new).');
-    // set role if requested
-    const profiles = storage.get(STORAGE_KEYS.PROFILES) || {};
-    const u = storage.get(STORAGE_KEYS.USERS).find(x=>x.phone===pendingOtpPhone);
-    if(u) {
-      profiles[u.id] = profiles[u.id] || { id:u.id, full_name: pendingOtpPhone, phone: pendingOtpPhone, role: pendingSelectedRole, wallet_balance:0 };
-      profiles[u.id].role = pendingSelectedRole;
-      storage.set(STORAGE_KEYS.PROFILES, profiles);
-    }
+    alert('OTP verified (demo). Profile created/updated.');
     renderApp();
   } else {
-    alert('Wrong code in demo. Try 123456 or Auto-verify.');
-  }t
+    alert('Wrong OTP (use 123456 or Auto-verify in demo).');
+  }
 };
-
-$('#autoVerify').onclick = ()=> {
-  otpInput.value = '123456';
-  $('#verifyOtp').click();
-};
-
+$('#autoVerify').onclick = ()=> { $('#otpInput').value='123456'; $('#verifyOtp').click(); };
 $('#closeOtp').onclick = ()=> { otpModal.classList.add('hidden'); otpModal.setAttribute('aria-hidden','true'); };
 
-// ---------- init ----------
-seedIfEmpty();
+// ---------------- routing helpers ----------------
+function route(page){ window.location.hash = page; renderApp(); }
 
-// initial route
+// ---------------- initial seed & boot ----------------
+seed();
 if(!window.location.hash) window.location.hash = 'login';
 renderApp();
-
-// handle simple hash nav changes
 window.addEventListener('hashchange', renderApp);
 
-// Expose some functions for buttons
+// ---------------- submit handlers via global for buttons ----------------
 window.viewJob = viewJob;
-window.openApply = openApply;
-window.route = route;
+window.attemptApply = attemptApply;
+
+// ---------------- posting notifications when a job is posted (function used in renderPostJob) -------------
+function notifyUsersForCategory(category, job){
+  // This local function mirrors the one above (kept for clarity)
+  const profiles = store.get(KEYS.PROFILES) || {};
+  const notifs = store.get(KEYS.NOTIFS) || {};
+  Object.values(profiles).forEach(profile => {
+    if(!profile.categories || profile.categories.length===0) return;
+    if(profile.categories.includes(category) && profile.subscription && profile.subscription.active){
+      const arr = notifs[profile.id] || [];
+      arr.unshift({ id:uid(), text:`New ${category} job: ${job.title} • ₹${job.pay}`, job_id: job.id, ts: Date.now(), read:false });
+      notifs[profile.id] = arr;
+    }
+  });
+  store.set(KEYS.NOTIFS, notifs);
+}
+
+// make notifyUsersForCategory global for renderPostJob to call
+window.notifyUsersForCategory = notifyUsersForCategory;
+
+// ---------------- convenience: route to jobs on load ----------------
+if(window.location.hash==='') window.location.hash='jobs';
+renderApp();
+
 </script>
+</body>
 </html>
