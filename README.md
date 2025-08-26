@@ -1,4 +1,4 @@
-
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -64,6 +64,7 @@
             font-size: 24px;
             font-weight: 700;
             color: var(--primary);
+            text-decoration: none;
         }
 
         .logo i {
@@ -256,6 +257,8 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .job-title {
@@ -474,6 +477,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .application-title {
@@ -554,10 +559,10 @@
 <body>
     <div class="container">
         <header>
-            <div class="logo">
+            <a href="#home" class="logo">
                 <i class="fas fa-hammer"></i>
                 <span>OddJobber</span>
-            </div>
+            </a>
             <nav id="nav">
                 <!-- Navigation will be dynamically populated -->
             </nav>
@@ -1259,6 +1264,17 @@
             
             // Load user applications
             loadProfileApplications();
+            
+            // Add event listeners to category items
+            setTimeout(() => {
+                const categoryItems = document.querySelectorAll('.category-item');
+                categoryItems.forEach(item => {
+                    item.addEventListener('click', function() {
+                        const category = this.querySelector('span').textContent;
+                        toggleCategory(category);
+                    });
+                });
+            }, 100);
         }
         
         // Toggle category selection
@@ -1268,14 +1284,20 @@
             }
             
             const index = currentUser.categories.indexOf(category);
-            const categoryElement = document.querySelector(`.category-item span:contains('${category}')`).parentElement;
             
             if (index > -1) {
                 currentUser.categories.splice(index, 1);
-                categoryElement.classList.remove('selected');
             } else {
                 currentUser.categories.push(category);
-                categoryElement.classList.add('selected');
+            }
+            
+            // Update UI
+            const categoryElement = Array.from(document.querySelectorAll('.category-item')).find(
+                el => el.querySelector('span').textContent === category
+            );
+            
+            if (categoryElement) {
+                categoryElement.classList.toggle('selected');
             }
         }
         
