@@ -22,7 +22,7 @@
             --dark: #212529;
             --gray: #6c757d;
             --light-gray: #e9ecef;
-            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
             --transition: all 0.3s ease;
         }
 
@@ -31,6 +31,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -38,56 +39,62 @@
             min-height: 100vh;
             color: var(--dark);
             line-height: 1.6;
+            padding: 0;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 20px;
+            padding: 15px;
         }
 
         header {
             background: white;
             border-radius: 12px;
             box-shadow: var(--card-shadow);
-            padding: 20px;
-            margin-bottom: 30px;
+            padding: 15px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: sticky;
+            top: 10px;
+            z-index: 100;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            gap: 12px;
-            font-size: 24px;
+            gap: 10px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--primary);
-            text-decoration: none;
         }
 
         .logo i {
             color: var(--accent);
-            font-size: 28px;
+            font-size: 24px;
         }
 
         nav {
             display: flex;
-            gap: 15px;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .nav-btn {
             background: transparent;
             border: none;
-            padding: 10px 18px;
+            padding: 8px 12px;
             border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
             transition: var(--transition);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            font-size: 14px;
         }
 
         .nav-btn:hover {
@@ -108,69 +115,69 @@
             background: white;
             border-radius: 12px;
             box-shadow: var(--card-shadow);
-            padding: 25px;
-            margin-bottom: 25px;
+            padding: 20px;
+            margin-bottom: 20px;
             transition: var(--transition);
+            animation: fadeIn 0.5s ease;
         }
 
         .card:hover {
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            transform: translateY(-3px);
         }
 
         h1, h2, h3, h4 {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--dark);
         }
 
         h1 {
-            font-size: 32px;
+            font-size: 28px;
         }
 
         h2 {
-            font-size: 26px;
+            font-size: 22px;
         }
 
         h3 {
-            font-size: 22px;
+            font-size: 20px;
         }
 
         p {
             margin-bottom: 15px;
             color: var(--gray);
+            font-size: 15px;
         }
 
         .grid {
             display: grid;
-            gap: 25px;
+            gap: 20px;
         }
 
         .grid-2 {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .grid-3 {
-            grid-template-columns: 1fr 1fr 1fr;
+            grid-template-columns: 1fr;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 600;
             color: var(--dark);
+            font-size: 14px;
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 14px;
+            padding: 12px;
             border: 1px solid var(--light-gray);
             border-radius: 8px;
             font-size: 16px;
             transition: var(--transition);
+            -webkit-appearance: none;
         }
 
         input:focus, select:focus, textarea:focus {
@@ -183,8 +190,8 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            padding: 14px 24px;
+            gap: 6px;
+            padding: 12px 18px;
             border: none;
             border-radius: 8px;
             font-size: 16px;
@@ -201,7 +208,7 @@
         .btn-primary:hover {
             background: var(--secondary);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.3);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
         }
 
         .btn-secondary {
@@ -242,71 +249,74 @@
         .job-card {
             border: 1px solid var(--light-gray);
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
             transition: var(--transition);
+            animation: slideUp 0.4s ease;
         }
 
         .job-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
 
         .job-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .job-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--dark);
         }
 
         .job-price {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
             color: var(--success);
         }
 
         .job-category {
             display: inline-block;
-            padding: 6px 12px;
+            padding: 5px 10px;
             background: var(--light);
             color: var(--primary);
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .job-description {
             color: var(--gray);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             line-height: 1.6;
+            font-size: 14px;
         }
 
         .job-details {
             display: flex;
-            gap: 15px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
         }
 
         .job-detail {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
             color: var(--gray);
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .job-detail i {
             color: var(--primary);
+            font-size: 14px;
         }
 
         .job-footer {
@@ -314,7 +324,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .job-poster {
@@ -322,68 +332,81 @@
             font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
+            font-size: 14px;
         }
 
         .job-actions {
             display: flex;
-            gap: 10px;
+            gap: 8px;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .job-actions button {
+            flex: 1;
         }
 
         .feature-section {
             text-align: center;
-            padding: 40px 0;
+            padding: 30px 0;
         }
 
         .features {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             flex-wrap: wrap;
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
         .feature {
             background: white;
             border-radius: 12px;
-            padding: 25px;
-            width: 250px;
+            padding: 20px;
+            width: 100%;
+            max-width: 280px;
             box-shadow: var(--card-shadow);
             transition: var(--transition);
         }
 
         .feature:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
         }
 
         .feature i {
-            font-size: 40px;
+            font-size: 36px;
             color: var(--primary);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .feature h3 {
-            margin-bottom: 10px;
-            font-size: 20px;
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .feature p {
+            font-size: 14px;
         }
 
         .notification {
             position: fixed;
             top: 20px;
             right: 20px;
-            padding: 15px 20px;
+            padding: 12px 16px;
             background: white;
             border-left: 4px solid var(--success);
             border-radius: 8px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             transform: translateX(100%);
             opacity: 0;
             transition: var(--transition);
             z-index: 1000;
+            max-width: 90%;
         }
 
         .notification.show {
@@ -393,7 +416,7 @@
 
         .notification i {
             color: var(--success);
-            font-size: 20px;
+            font-size: 18px;
         }
 
         .notification.error {
@@ -409,13 +432,13 @@
         }
 
         .profile-info {
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .profile-info-item {
             display: flex;
             justify-content: space-between;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid var(--light-gray);
         }
 
@@ -426,28 +449,31 @@
         .info-label {
             font-weight: 600;
             color: var(--dark);
+            font-size: 14px;
         }
 
         .info-value {
             color: var(--gray);
+            font-size: 14px;
         }
 
         .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .category-item {
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px;
+            gap: 8px;
+            padding: 10px;
             background: var(--light);
             border-radius: 8px;
             cursor: pointer;
             transition: var(--transition);
+            font-size: 14px;
         }
 
         .category-item:hover {
@@ -461,36 +487,37 @@
         }
 
         .category-item i {
-            font-size: 20px;
+            font-size: 16px;
         }
 
         .application-card {
             border: 1px solid var(--light-gray);
             border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 16px;
+            margin-bottom: 16px;
             background: white;
+            animation: slideUp 0.4s ease;
         }
 
         .application-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
 
         .application-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
             color: var(--dark);
         }
 
         .application-status {
-            padding: 6px 12px;
+            padding: 5px 10px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
         }
 
@@ -510,28 +537,146 @@
         }
 
         .loader {
-            border: 4px solid var(--light-gray);
-            border-top: 4px solid var(--primary);
+            border: 3px solid var(--light-gray);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 30px;
+            height: 30px;
             animation: spin 1s linear infinite;
             margin: 20px auto;
         }
 
+        .mobile-tabs {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 90;
+            padding: 10px;
+        }
+
+        .tab-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border-radius: 8px;
+            transition: var(--transition);
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 12px;
+        }
+
+        .tab-item.active {
+            color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .tab-item i {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        /* Animations */
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
 
-        @media (max-width: 900px) {
-            .grid-2, .grid-3 {
-                grid-template-columns: 1fr;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                padding: 12px;
+                margin-bottom: 15px;
+            }
+            
+            .logo {
+                font-size: 18px;
+            }
+            
+            .logo i {
+                font-size: 22px;
             }
             
             nav {
-                flex-wrap: wrap;
-                justify-content: center;
+                display: none;
+            }
+            
+            .mobile-tabs {
+                display: flex;
+                justify-content: space-around;
+            }
+            
+            .card {
+                padding: 16px;
+                margin-bottom: 15px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 20px;
+            }
+            
+            .job-card {
+                padding: 14px;
+            }
+            
+            .job-title {
+                font-size: 16px;
+            }
+            
+            .job-price {
+                font-size: 16px;
+            }
+            
+            .feature {
+                padding: 16px;
+            }
+            
+            .feature i {
+                font-size: 32px;
+            }
+            
+            .category-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            
+            .btn {
+                padding: 10px 16px;
+                font-size: 15px;
+            }
+        }
+
+        @media (min-width: 480px) {
+            .grid-2 {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .job-actions {
+                flex-direction: column;
             }
             
             .job-footer {
@@ -541,17 +686,10 @@
             
             .job-actions {
                 width: 100%;
-                justify-content: space-between;
             }
             
             .job-actions button {
-                flex: 1;
-            }
-            
-            header {
-                flex-direction: column;
-                gap: 15px;
-                text-align: center;
+                width: 100%;
             }
         }
     </style>
@@ -559,10 +697,10 @@
 <body>
     <div class="container">
         <header>
-            <a href="#home" class="logo">
+            <div class="logo">
                 <i class="fas fa-hammer"></i>
                 <span>OddJobber</span>
-            </a>
+            </div>
             <nav id="nav">
                 <!-- Navigation will be dynamically populated -->
             </nav>
@@ -571,6 +709,25 @@
         <main id="app">
             <!-- Main content will be dynamically populated -->
         </main>
+    </div>
+    
+    <div class="mobile-tabs">
+        <a href="#home" class="tab-item">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#jobs" class="tab-item">
+            <i class="fas fa-briefcase"></i>
+            <span>Jobs</span>
+        </a>
+        <a href="#post" class="tab-item">
+            <i class="fas fa-plus"></i>
+            <span>Post</span>
+        </a>
+        <a href="#profile" class="tab-item">
+            <i class="fas fa-user"></i>
+            <span>Profile</span>
+        </a>
     </div>
     
     <div class="notification" id="notification">
@@ -609,6 +766,7 @@
         const navEl = document.getElementById('nav');
         const appEl = document.getElementById('app');
         const notificationEl = document.getElementById('notification');
+        const tabItems = document.querySelectorAll('.tab-item');
         
         // Current user data
         let currentUser = null;
@@ -644,8 +802,26 @@
             // Set up routing
             setupRouting();
             
+            // Set up mobile tab clicks
+            setupMobileTabs();
+            
             // Render the appropriate view
             renderApp();
+        }
+        
+        // Set up mobile tabs
+        function setupMobileTabs() {
+            tabItems.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const page = this.getAttribute('href').substring(1);
+                    navigate(page);
+                    
+                    // Update active tab
+                    tabItems.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
         }
         
         // Get user profile from Firestore
@@ -676,6 +852,16 @@
             renderNav();
             
             const hash = window.location.hash.substring(1) || 'home';
+            
+            // Update active tab
+            tabItems.forEach(tab => {
+                const tabPage = tab.getAttribute('href').substring(1);
+                if (tabPage === hash) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
             
             switch(hash) {
                 case 'home':
@@ -741,7 +927,7 @@
                     <p>OddJobber connects you with skilled professionals for all your home needs. From plumbing to painting, find the right person for the job.</p>
                     
                     ${!currentUser ? `
-                        <div style="display: flex; gap: 15px; margin-top: 20px;">
+                        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
                             <button class="btn btn-primary" onclick="navigate('register')">
                                 <i class="fas fa-user-plus"></i> Get Started
                             </button>
@@ -776,7 +962,7 @@
                 <div class="card">
                     <h2>Popular Categories</h2>
                     <div class="category-grid">
-                        ${CATEGORIES.slice(0, 12).map(category => `
+                        ${CATEGORIES.slice(0, 6).map(category => `
                             <div class="category-item">
                                 <i class="fas fa-wrench"></i>
                                 <span>${category}</span>
@@ -795,7 +981,7 @@
             }
             
             appEl.innerHTML = `
-                <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <div class="card">
                     <h2>Login to Your Account</h2>
                     <form id="loginForm">
                         <div class="form-group">
@@ -842,7 +1028,7 @@
             }
             
             appEl.innerHTML = `
-                <div class="card" style="max-width: 500px; margin: 0 auto;">
+                <div class="card">
                     <h2>Create an Account</h2>
                     <form id="registerForm">
                         <div class="form-group">
@@ -932,7 +1118,7 @@
                     <p>Browse and apply to available jobs in your area.</p>
                     
                     <div class="form-group">
-                        <input type="text" id="jobSearch" placeholder="Search for jobs..." style="max-width: 400px;">
+                        <input type="text" id="jobSearch" placeholder="Search for jobs...">
                     </div>
                 </div>
                 
@@ -1116,18 +1302,16 @@
                     <p>Fill out the form below to post a new job opportunity.</p>
                     
                     <form id="postJobForm">
-                        <div class="grid grid-2">
-                            <div class="form-group">
-                                <label for="jobCategory">Job Category</label>
-                                <select id="jobCategory" required>
-                                    <option value="">Select a category</option>
-                                    ${CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="jobTitle">Job Title</label>
-                                <input type="text" id="jobTitle" placeholder="e.g. House Painting" required>
-                            </div>
+                        <div class="form-group">
+                            <label for="jobCategory">Job Category</label>
+                            <select id="jobCategory" required>
+                                <option value="">Select a category</option>
+                                ${CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="jobTitle">Job Title</label>
+                            <input type="text" id="jobTitle" placeholder="e.g. House Painting" required>
                         </div>
                         
                         <div class="form-group">
@@ -1239,8 +1423,7 @@
                     
                     <div class="category-grid" id="categoriesContainer">
                         ${CATEGORIES.map(category => `
-                            <div class="category-item ${currentUser.categories && currentUser.categories.includes(category) ? 'selected' : ''}" 
-                                 onclick="toggleCategory('${category}')">
+                            <div class="category-item ${currentUser.categories && currentUser.categories.includes(category) ? 'selected' : ''}">
                                 <i class="fas fa-wrench"></i>
                                 <span>${category}</span>
                             </div>
