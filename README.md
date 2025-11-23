@@ -1,1622 +1,1414 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OddJobber - Find Local Service Providers</title>
+    <title>m squre </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getDatabase, ref, onValue, push, set, remove, get, update } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2ETid4xmCppgWKUbdR1iPhgYGUzGnkMQ",
+            authDomain: "circles-go-digital.firebaseapp.com",
+            databaseURL: "https://circles-go-digital-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "circles-go-digital",
+            storageBucket: "circles-go-digital.firebasestorage.app",
+            messagingSenderId: "132271508600",
+            appId: "1:132271508600:web:dfb30daaa0eb79534bf18d",
+            measurementId: "G-RQK3QVXQPR"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        window.firebase = {
+            database,
+            ref,
+            onValue,
+            push,
+            set,
+            remove,
+            get,
+            update
+        };
+
+        console.log('Firebase initialized successfully');
+    </script>
+
     <style>
         :root {
-            --primary: #4361ee;
-            --primary-light: #4895ef;
-            --secondary: #3a0ca3;
-            --accent: #f72585;
-            --success: #4cc9f0;
-            --warning: #ffd166;
-            --danger: #ef476f;
-            --light: #f8f9fa;
-            --dark: #212529;
-            --gray: #6c757d;
-            --light-gray: #e9ecef;
-            --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            --transition: all 0.3s ease;
+            --primary: #dc2626;
+            --primary-dark: #b91c1c;
+            --secondary: #f59e0b;
+            --success: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --bg: #ffffff;
+            --card: #ffffff;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 25px rgba(0, 0, 0, 0.15);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            -webkit-tap-highlight-color: transparent;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
 
         body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-            color: var(--dark);
+            background: var(--bg);
+            color: var(--text);
             line-height: 1.6;
-            padding: 0;
+            padding-bottom: 80px; /* Space for bottom nav */
         }
 
-        .container {
-            max-width: 100%;
-            margin: 0 auto;
-            padding: 15px;
-        }
-
-        header {
-            background: white;
-            border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            padding: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Header */
+        .app-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 16px;
             position: sticky;
-            top: 10px;
+            top: 0;
             z-index: 100;
+            box-shadow: var(--shadow);
         }
 
-        .logo {
+        .header-top {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 10px;
+            margin-bottom: 12px;
+        }
+
+        .restaurant-info h1 {
             font-size: 20px;
             font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .restaurant-info p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .table-info {
+            background: rgba(255,255,255,0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .order-status-badge {
+            background: rgba(255,255,255,0.9);
             color: var(--primary);
-        }
-
-        .logo i {
-            color: var(--accent);
-            font-size: 24px;
-        }
-
-        nav {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .nav-btn {
-            background: transparent;
-            border: none;
             padding: 8px 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 14px;
-        }
-
-        .nav-btn:hover {
-            background: var(--light);
-            transform: translateY(-2px);
-        }
-
-        .nav-btn.primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .nav-btn.primary:hover {
-            background: var(--secondary);
-        }
-
-        .card {
-            background: white;
             border-radius: 12px;
-            box-shadow: var(--card-shadow);
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: var(--transition);
-            animation: fadeIn 0.5s ease;
-        }
-
-        .card:hover {
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-            transform: translateY(-3px);
-        }
-
-        h1, h2, h3, h4 {
-            margin-bottom: 12px;
-            color: var(--dark);
-        }
-
-        h1 {
-            font-size: 28px;
-        }
-
-        h2 {
-            font-size: 22px;
-        }
-
-        h3 {
-            font-size: 20px;
-        }
-
-        p {
-            margin-bottom: 15px;
-            color: var(--gray);
-            font-size: 15px;
-        }
-
-        .grid {
-            display: grid;
-            gap: 20px;
-        }
-
-        .grid-2 {
-            grid-template-columns: 1fr;
-        }
-
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 14px;
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid var(--light-gray);
-            border-radius: 8px;
-            font-size: 16px;
-            transition: var(--transition);
-            -webkit-appearance: none;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-            padding: 12px 18px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.3);
-        }
-
-        .btn-secondary {
-            background: var(--light);
-            color: var(--dark);
-        }
-
-        .btn-secondary:hover {
-            background: var(--light-gray);
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-success:hover {
-            background: #3aa5d3;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #d93654;
-            transform: translateY(-2px);
-        }
-
-        .btn-block {
-            display: block;
-            width: 100%;
-        }
-
-        .job-card {
-            border: 1px solid var(--light-gray);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            transition: var(--transition);
-            animation: slideUp 0.4s ease;
-        }
-
-        .job-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .job-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .job-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .job-price {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--success);
-        }
-
-        .job-category {
-            display: inline-block;
-            padding: 5px 10px;
-            background: var(--light);
-            color: var(--primary);
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .job-description {
-            color: var(--gray);
-            margin-bottom: 12px;
-            line-height: 1.6;
-            font-size: 14px;
-        }
-
-        .job-details {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .job-detail {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            color: var(--gray);
-            font-size: 13px;
-        }
-
-        .job-detail i {
-            color: var(--primary);
-            font-size: 14px;
-        }
-
-        .job-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .job-poster {
-            color: var(--primary);
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 14px;
-        }
-
-        .job-actions {
-            display: flex;
-            gap: 8px;
-            width: 100%;
-            justify-content: space-between;
-        }
-
-        .job-actions button {
-            flex: 1;
-        }
-
-        .feature-section {
-            text-align: center;
-            padding: 30px 0;
-        }
-
-        .features {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 30px;
-        }
-
-        .feature {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            width: 100%;
-            max-width: 280px;
-            box-shadow: var(--card-shadow);
-            transition: var(--transition);
-        }
-
-        .feature:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature i {
-            font-size: 36px;
-            color: var(--primary);
-            margin-bottom: 12px;
-        }
-
-        .feature h3 {
-            margin-bottom: 8px;
-            font-size: 18px;
-        }
-
-        .feature p {
-            font-size: 14px;
-        }
-
-        .notification {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            padding: 12px 16px;
-            background: white;
-            border-left: 4px solid var(--success);
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transform: translateX(100%);
-            opacity: 0;
-            transition: var(--transition);
-            z-index: 1000;
-            max-width: 90%;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        .notification i {
-            color: var(--success);
-            font-size: 18px;
-        }
-
-        .notification.error {
-            border-left-color: var(--danger);
-        }
-
-        .notification.error i {
-            color: var(--danger);
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .profile-info {
-            margin-bottom: 25px;
-        }
-
-        .profile-info-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 0;
-            border-bottom: 1px solid var(--light-gray);
-        }
-
-        .profile-info-item:last-child {
-            border-bottom: none;
-        }
-
-        .info-label {
-            font-weight: 600;
-            color: var(--dark);
-            font-size: 14px;
-        }
-
-        .info-value {
-            color: var(--gray);
-            font-size: 14px;
-        }
-
-        .category-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-            gap: 10px;
-            margin-top: 15px;
-        }
-
-        .category-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px;
-            background: var(--light);
-            border-radius: 8px;
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 14px;
-        }
-
-        .category-item:hover {
-            background: var(--primary-light);
-            color: white;
-        }
-
-        .category-item.selected {
-            background: var(--primary);
-            color: white;
-        }
-
-        .category-item i {
-            font-size: 16px;
-        }
-
-        .application-card {
-            border: 1px solid var(--light-gray);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 16px;
-            background: white;
-            animation: slideUp 0.4s ease;
-        }
-
-        .application-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .application-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--dark);
-        }
-
-        .application-status {
-            padding: 5px 10px;
-            border-radius: 20px;
             font-size: 12px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 8px;
         }
 
-        .status-pending {
-            background: var(--warning);
-            color: var(--dark);
-        }
-
-        .status-accepted {
-            background: var(--success);
-            color: white;
-        }
-
-        .status-completed {
-            background: var(--primary);
-            color: white;
-        }
-
-        .loader {
-            border: 3px solid var(--light-gray);
-            border-top: 3px solid var(--primary);
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-        }
-
-        .mobile-tabs {
-            display: none;
+        /* Bottom Navigation */
+        .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
             background: white;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 90;
-            padding: 10px;
+            display: flex;
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            z-index: 1000;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
-        .tab-item {
+        .nav-item {
+            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            gap: 4px;
             padding: 8px;
-            border-radius: 8px;
-            transition: var(--transition);
-            color: var(--gray);
-            text-decoration: none;
+            border: none;
+            background: none;
+            color: var(--text-light);
             font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .tab-item.active {
+        .nav-item.active {
             color: var(--primary);
-            background: rgba(67, 97, 238, 0.1);
         }
 
-        .tab-item i {
+        .nav-item i {
             font-size: 20px;
+        }
+
+        /* Categories */
+        .categories-scroll {
+            display: flex;
+            gap: 8px;
+            padding: 16px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            background: white;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .categories-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-btn {
+            padding: 10px 16px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-light);
+            white-space: nowrap;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Menu Grid */
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            padding: 16px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .menu-item.disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .menu-item-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: var(--text);
+            flex: 1;
+            margin-right: 12px;
+        }
+
+        .menu-item-price {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 18px;
+        }
+
+        .menu-item-category {
+            color: var(--text-light);
+            font-size: 12px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .menu-item-desc {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .menu-item-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--primary);
+            background: white;
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .quantity-btn:active {
+            background: var(--primary);
+            color: white;
+            transform: scale(0.95);
+        }
+
+        .quantity-display {
+            font-weight: 600;
+            min-width: 30px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .add-to-cart-btn {
+            flex: 1;
+            padding: 10px 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .add-to-cart-btn:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        .added-to-cart {
+            background: var(--success);
+        }
+
+        .added-to-cart:active {
+            background: #0da271;
+        }
+
+        /* Cart Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            transition: right 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 20px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item-info {
+            flex: 1;
+        }
+
+        .cart-item-name {
+            font-weight: 600;
             margin-bottom: 4px;
         }
 
-        /* Animations */
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        .cart-item-price {
+            color: var(--text-light);
+            font-size: 14px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .cart-total {
+            padding: 20px 16px;
+            border-top: 2px solid var(--border);
+            background: #f8fafc;
         }
 
-        /* Responsive styles */
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
+        .total-amount {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 16px;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:active {
+            background: #0da271;
+            transform: scale(0.98);
+        }
+
+        .checkout-btn:disabled {
+            background: var(--text-light);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .cart-fab {
+            position: fixed;
+            bottom: 80px;
+            right: 16px;
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+            z-index: 999;
+        }
+
+        .cart-fab:active {
+            transform: scale(0.95);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1999;
+            display: none;
+        }
+
+        /* Order Success */
+        .order-success {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+            margin: 20px 16px;
+        }
+
+        .success-icon {
+            font-size: 64px;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+
+        /* Order Tracking */
+        .order-card {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin: 12px 16px;
+            box-shadow: var(--shadow);
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-accepted {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-cooking {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-ready {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-cancelled {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Table Selection */
+        .table-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+        }
+
+        .table-modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .table-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 20px 0;
+        }
+
+        .table-btn {
+            padding: 16px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .table-btn:active {
+            transform: scale(0.95);
+        }
+
+        .table-btn.selected {
+            background: var(--success);
+            transform: scale(0.95);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        /* Swipeable Tabs */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Loading States */
+        .skeleton {
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 8px;
+        }
+
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .menu-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            header {
-                padding: 12px;
-                margin-bottom: 15px;
-            }
-            
-            .logo {
-                font-size: 18px;
-            }
-            
-            .logo i {
-                font-size: 22px;
-            }
-            
-            nav {
-                display: none;
-            }
-            
-            .mobile-tabs {
-                display: flex;
-                justify-content: space-around;
-            }
-            
-            .card {
-                padding: 16px;
-                margin-bottom: 15px;
-            }
-            
-            h1 {
-                font-size: 24px;
-            }
-            
-            h2 {
-                font-size: 20px;
-            }
-            
-            .job-card {
-                padding: 14px;
-            }
-            
-            .job-title {
-                font-size: 16px;
-            }
-            
-            .job-price {
-                font-size: 16px;
-            }
-            
-            .feature {
-                padding: 16px;
-            }
-            
-            .feature i {
-                font-size: 32px;
-            }
-            
-            .category-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-            }
-            
-            .btn {
-                padding: 10px 16px;
-                font-size: 15px;
+            .cart-sidebar {
+                width: 400px;
+                right: -400px;
             }
         }
 
-        @media (min-width: 480px) {
-            .grid-2 {
-                grid-template-columns: 1fr 1fr;
+        @media (min-width: 1024px) {
+            .menu-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        @media (max-width: 480px) {
-            .job-actions {
-                flex-direction: column;
+        /* Touch Improvements */
+        @media (hover: none) {
+            .menu-item:hover {
+                transform: none;
             }
             
-            .job-footer {
-                flex-direction: column;
-                align-items: flex-start;
+            .quantity-btn:hover {
+                background: white;
+                color: var(--primary);
             }
             
-            .job-actions {
-                width: 100%;
-            }
-            
-            .job-actions button {
-                width: 100%;
+            .add-to-cart-btn:hover {
+                background: var(--primary);
             }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-hammer"></i>
-                <span>OddJobber</span>
+    <!-- Table Selection Modal -->
+    <div id="tableModal" class="table-modal">
+        <div class="table-modal-content">
+            <h2 style="text-align: center; margin-bottom: 16px;">
+                <i class="fas fa-table"></i> Select Your Table
+            </h2>
+            <p style="text-align: center; color: var(--text-light); margin-bottom: 20px;">
+                Please select your table number to continue
+            </p>
+            <div class="table-grid" id="tableGrid">
+                <!-- Tables will be generated here -->
             </div>
-            <nav id="nav">
-                <!-- Navigation will be dynamically populated -->
-            </nav>
-        </header>
-        
-        <main id="app">
-            <!-- Main content will be dynamically populated -->
-        </main>
+            <button class="checkout-btn" onclick="useCurrentTable()" style="margin-top: 20px;">
+                <i class="fas fa-check"></i> Confirm Table
+            </button>
+        </div>
     </div>
-    
-    <div class="mobile-tabs">
-        <a href="#home" class="tab-item">
-            <i class="fas fa-home"></i>
-            <span>Home</span>
-        </a>
-        <a href="#jobs" class="tab-item">
-            <i class="fas fa-briefcase"></i>
-            <span>Jobs</span>
-        </a>
-        <a href="#post" class="tab-item">
-            <i class="fas fa-plus"></i>
-            <span>Post</span>
-        </a>
-        <a href="#profile" class="tab-item">
-            <i class="fas fa-user"></i>
-            <span>Profile</span>
-        </a>
+
+    <!-- App Header -->
+    <div class="app-header">
+        <div class="header-top">
+            <div class="restaurant-info">
+                <h1>CircleApps Restaurant</h1>
+                <p>Order your favorite food</p>
+            </div>
+            <div class="table-info" id="tableInfo">
+                <i class="fas fa-table"></i>
+                Table: Not Selected
+            </div>
+        </div>
+        <div id="orderStatusBadge" class="order-status-badge" style="display: none;">
+            <i class="fas fa-clock"></i>
+            <span id="currentOrderStatusText">No active orders</span>
+        </div>
     </div>
-    
-    <div class="notification" id="notification">
-        <i class="fas fa-check-circle"></i>
-        <div class="notification-content">Operation completed successfully!</div>
+
+    <!-- Main Content -->
+    <div id="tab-menu" class="tab-content active">
+        <!-- Categories -->
+        <div class="categories-scroll" id="categoriesNav">
+            <button class="category-btn active" onclick="filterCategory('all')">
+                <i class="fas fa-star"></i> All
+            </button>
+        </div>
+
+        <!-- Menu Grid -->
+        <div id="menuGrid" class="menu-grid">
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h3>Loading Menu...</h3>
+                <p>Please wait while we load the menu</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Tab -->
+    <div id="tab-orders" class="tab-content">
+        <div id="orderTracking">
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-receipt"></i>
+                </div>
+                <h3>No Active Orders</h3>
+                <p>Your order status will appear here</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success -->
+    <div id="orderSuccess" class="order-success" style="display: none;">
+        <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Order Placed Successfully!</h2>
+        <p>Your order has been received and is being prepared.</p>
+        <button class="checkout-btn" onclick="continueOrdering()" style="margin-top: 20px; background: var(--primary);">
+            <i class="fas fa-utensils"></i> Continue Ordering
+        </button>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3><i class="fas fa-shopping-cart"></i> Your Order</h3>
+            <button class="quantity-btn" onclick="toggleCart()" style="border: none; background: var(--danger); color: white;">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-shopping-cart"></i>
+                </div>
+                <h3>Your cart is empty</h3>
+                <p>Add some delicious items to get started</p>
+            </div>
+        </div>
+        <div class="cart-total">
+            <div class="total-amount" id="cartTotal">Total: ₹0</div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="placeOrder()" disabled>
+                <i class="fas fa-paper-plane"></i> Place Order
+            </button>
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- Cart FAB -->
+    <button class="cart-fab" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </button>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <button class="nav-item active" onclick="switchTab('menu')">
+            <i class="fas fa-utensils"></i>
+            <span>Menu</span>
+        </button>
+        <button class="nav-item" onclick="switchTab('orders')">
+            <i class="fas fa-receipt"></i>
+            <span>Orders</span>
+        </button>
+        <button class="nav-item" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </button>
     </div>
 
     <script>
-        // Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD1RSy5kqskKQKm2OyZCXyl7HdrQbh_goI",
-            authDomain: "oddjobber-53831.firebaseapp.com",
-            projectId: "oddjobber-53831",
-            storageBucket: "oddjobber-53831.firebasestorage.app",
-            messagingSenderId: "432449054979",
-            appId: "1:432449054979:web:55b16b968d556a0978e136",
-            measurementId: "G-K2HZ49N5QX"
-        };
-        
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.firestore();
-        const auth = firebase.auth();
-        
-        // Sample job categories
-        const CATEGORIES = [
-            'Carpenter', 'Mechanic', 'Helper', 'Agriculture', 'Electrician', 
-            'Plumber', 'Painter', 'Mason', 'Tailor', 'Tutor', 'Delivery', 
-            'Driver', 'Cleaner', 'Cook', 'Gardener', 'Welder', 'Roofer', 
-            'HVAC Technician', 'Pest Control', 'Photographer', 'Event Staff', 
-            'Babysitter', 'Animal Care', 'Laundry', 'Upholstery', 'CCTV Technician', 
-            'Security Guard', 'IT Support', 'Beauty & Salon', 'Plumber Assistant'
-        ];
-        
-        // DOM Elements
-        const navEl = document.getElementById('nav');
-        const appEl = document.getElementById('app');
-        const notificationEl = document.getElementById('notification');
-        const tabItems = document.querySelectorAll('.tab-item');
-        
-        // Current user data
-        let currentUser = null;
-        let allJobs = [];
-        let userApplications = [];
-        
-        // Initialize the app
-        function initApp() {
-            // Set up auth state listener
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    // User is signed in
-                    currentUser = {
-                        id: user.uid,
-                        email: user.email,
-                        name: user.displayName || user.email.split('@')[0],
-                        phone: user.phoneNumber || '',
-                        location: '',
-                        pincode: '',
-                        categories: []
-                    };
-                    
-                    // Get user profile from Firestore
-                    getUserProfile(user.uid);
-                } else {
-                    // User is signed out
-                    currentUser = null;
-                    localStorage.removeItem('oddjobber_user');
-                    renderApp();
+        // Global variables
+        let menuItems = {};
+        let cart = [];
+        let currentTable = '';
+        let currentCategory = 'all';
+        let orders = [];
+        let restaurantId = 'restaurant_001';
+        let hasTableBeenSet = false;
+        let currentTab = 'menu';
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Mobile Customer App initialized');
+            getTableFromURL();
+            setupFirebaseListeners();
+            setupEventListeners();
+            generateTableSelection();
+            
+            // Add touch improvements
+            setupTouchEvents();
+        });
+
+        // Setup touch events for better mobile experience
+        function setupTouchEvents() {
+            // Prevent zoom on double tap
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
                 }
-            });
-            
-            // Set up routing
-            setupRouting();
-            
-            // Set up mobile tab clicks
-            setupMobileTabs();
-            
-            // Render the appropriate view
-            renderApp();
+                lastTouchEnd = now;
+            }, false);
+
+            // Add touch feedback
+            document.addEventListener('touchstart', function() {}, {passive: true});
         }
-        
-        // Set up mobile tabs
-        function setupMobileTabs() {
-            tabItems.forEach(tab => {
-                tab.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const page = this.getAttribute('href').substring(1);
-                    navigate(page);
-                    
-                    // Update active tab
-                    tabItems.forEach(t => t.classList.remove('active'));
-                    this.classList.add('active');
-                });
-            });
-        }
-        
-        // Get user profile from Firestore
-        function getUserProfile(userId) {
-            db.collection('users').doc(userId).get()
-                .then((doc) => {
-                    if (doc.exists) {
-                        const userData = doc.data();
-                        currentUser = { ...currentUser, ...userData };
-                        localStorage.setItem('oddjobber_user', JSON.stringify(currentUser));
-                    }
-                    renderApp();
-                })
-                .catch((error) => {
-                    console.error("Error getting user profile:", error);
-                    showNotification('Error loading profile', true);
-                    renderApp();
-                });
-        }
-        
-        // Set up routing
-        function setupRouting() {
-            window.addEventListener('hashchange', renderApp);
-        }
-        
-        // Render the app based on the current route
-        function renderApp() {
-            renderNav();
+
+        // Get table number from URL
+        function getTableFromURL() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlTable = urlParams.get('table');
             
-            const hash = window.location.hash.substring(1) || 'home';
-            
-            // Update active tab
-            tabItems.forEach(tab => {
-                const tabPage = tab.getAttribute('href').substring(1);
-                if (tabPage === hash) {
-                    tab.classList.add('active');
-                } else {
-                    tab.classList.remove('active');
-                }
-            });
-            
-            switch(hash) {
-                case 'home':
-                    renderHome();
-                    break;
-                case 'login':
-                    renderLogin();
-                    break;
-                case 'register':
-                    renderRegister();
-                    break;
-                case 'jobs':
-                    renderJobs();
-                    break;
-                case 'post':
-                    renderPostJob();
-                    break;
-                case 'profile':
-                    renderProfile();
-                    break;
-                default:
-                    renderHome();
-            }
-        }
-        
-        // Render navigation
-        function renderNav() {
-            if (currentUser) {
-                navEl.innerHTML = `
-                    <button class="nav-btn" onclick="navigate('jobs')">
-                        <i class="fas fa-briefcase"></i> Find Jobs
-                    </button>
-                    <button class="nav-btn" onclick="navigate('post')">
-                        <i class="fas fa-plus-circle"></i> Post a Job
-                    </button>
-                    <button class="nav-btn" onclick="navigate('profile')">
-                        <i class="fas fa-user"></i> Profile
-                    </button>
-                    <button class="nav-btn" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
+            if (urlTable) {
+                currentTable = 'Table ' + urlTable;
+                document.getElementById('tableInfo').innerHTML = `
+                    <i class="fas fa-table"></i>
+                    ${currentTable}
                 `;
+                hasTableBeenSet = true;
             } else {
-                navEl.innerHTML = `
-                    <button class="nav-btn" onclick="navigate('home')">
-                        <i class="fas fa-home"></i> Home
-                    </button>
-                    <button class="nav-btn" onclick="navigate('login')">
-                        <i class="fas fa-sign-in-alt"></i> Login
-                    </button>
-                    <button class="nav-btn primary" onclick="navigate('register')">
-                        <i class="fas fa-user-plus"></i> Register
+                // Show table selection modal if no table in URL
+                setTimeout(() => {
+                    document.getElementById('tableModal').style.display = 'flex';
+                }, 500);
+            }
+        }
+
+        // Generate table selection buttons
+        function generateTableSelection() {
+            const tableGrid = document.getElementById('tableGrid');
+            let tablesHTML = '';
+            
+            for (let i = 1; i <= 12; i++) {
+                tablesHTML += `
+                    <button class="table-btn" onclick="selectTable(${i})">
+                        Table ${i}
                     </button>
                 `;
             }
+            
+            tableGrid.innerHTML = tablesHTML;
         }
-        
-        // Render home page
-        function renderHome() {
-            appEl.innerHTML = `
-                <div class="card">
-                    <h1>Find Local Service Providers</h1>
-                    <p>OddJobber connects you with skilled professionals for all your home needs. From plumbing to painting, find the right person for the job.</p>
-                    
-                    ${!currentUser ? `
-                        <div style="display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap;">
-                            <button class="btn btn-primary" onclick="navigate('register')">
-                                <i class="fas fa-user-plus"></i> Get Started
-                            </button>
-                            <button class="btn btn-secondary" onclick="navigate('login')">
-                                <i class="fas fa-sign-in-alt"></i> Login
-                            </button>
-                        </div>
-                    ` : ''}
-                </div>
-                
-                <div class="feature-section">
-                    <h2>How It Works</h2>
-                    <div class="features">
-                        <div class="feature">
-                            <i class="fas fa-search"></i>
-                            <h3>Find Jobs</h3>
-                            <p>Browse available jobs in your area and field of expertise.</p>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-briefcase"></i>
-                            <h3>Apply Easily</h3>
-                            <p>Apply to jobs with just a few clicks and get hired quickly.</p>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-money-bill-wave"></i>
-                            <h3>Get Paid</h3>
-                            <p>Complete jobs and get paid directly through the platform.</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h2>Popular Categories</h2>
-                    <div class="category-grid">
-                        ${CATEGORIES.slice(0, 6).map(category => `
-                            <div class="category-item">
-                                <i class="fas fa-wrench"></i>
-                                <span>${category}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                </div>
-            `;
+
+        // Select table
+        function selectTable(tableNumber) {
+            currentTable = 'Table ' + tableNumber;
+            document.querySelectorAll('.table-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            event.target.classList.add('selected');
         }
-        
-        // Render login page
-        function renderLogin() {
-            if (currentUser) {
-                navigate('jobs');
-                return;
+
+        // Use current table
+        function useCurrentTable() {
+            if (currentTable) {
+                document.getElementById('tableInfo').innerHTML = `
+                    <i class="fas fa-table"></i>
+                    ${currentTable}
+                `;
+                document.getElementById('tableModal').style.display = 'none';
+                hasTableBeenSet = true;
+                
+                // Show success feedback
+                showNotification('Table selected successfully!', 'success');
+            } else {
+                showNotification('Please select a table first', 'error');
             }
+        }
+
+        // Switch between tabs
+        function switchTab(tabName) {
+            currentTab = tabName;
             
-            appEl.innerHTML = `
-                <div class="card">
-                    <h2>Login to Your Account</h2>
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="loginEmail">Email</label>
-                            <input type="email" id="loginEmail" placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="loginPassword">Password</label>
-                            <input type="password" id="loginPassword" placeholder="Enter your password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-sign-in-alt"></i> Login
-                        </button>
-                    </form>
-                    <p style="text-align: center; margin-top: 20px;">
-                        Don't have an account? <a href="#" onclick="navigate('register')">Register here</a>
-                    </p>
-                </div>
-            `;
+            // Update nav active state
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            event.target.classList.add('active');
             
-            document.getElementById('loginForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = document.getElementById('loginEmail').value;
-                const password = document.getElementById('loginPassword').value;
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById('tab-' + tabName).classList.add('active');
+        }
+
+        // Setup Firebase listeners
+        function setupFirebaseListeners() {
+            const { database, ref, onValue } = window.firebase;
+            
+            // Listen to menuItems from Firebase
+            onValue(ref(database, 'menuItems'), (snapshot) => {
+                const data = snapshot.val();
+                menuItems = data || {};
+                console.log('Menu items loaded from Firebase:', Object.keys(menuItems).length);
                 
-                // Firebase authentication
-                auth.signInWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        showNotification('Login successful!');
-                        navigate('jobs');
-                    })
-                    .catch((error) => {
-                        console.error("Login error:", error);
-                        showNotification(error.message, true);
-                    });
+                if (Object.keys(menuItems).length > 0) {
+                    displayMenuItems();
+                    updateCategoriesFromMenuItems();
+                } else {
+                    loadSampleMenuItems();
+                }
+            });
+
+            // Listen to orders from Firebase
+            onValue(ref(database, 'orders'), (snapshot) => {
+                const data = snapshot.val();
+                orders = data ? Object.values(data) : [];
+                console.log('Orders loaded from Firebase:', orders.length);
+                
+                updateCustomerOrderStatus();
+                updateOrderStatusBadge();
             });
         }
-        
-        // Render register page
-        function renderRegister() {
-            if (currentUser) {
-                navigate('profile');
-                return;
-            }
+
+        // Load sample data if Firebase is empty
+        function loadSampleMenuItems() {
+            const sampleItems = {
+                'item1': { id: 'item1', name: 'Margherita Pizza', price: 299, category: 'Main Course', description: 'Classic pizza with tomato sauce and mozzarella', available: true },
+                'item2': { id: 'item2', name: 'Garlic Bread', price: 149, category: 'Starters', description: 'Freshly baked bread with garlic butter', available: true },
+                'item3': { id: 'item3', name: 'Chocolate Lava Cake', price: 179, category: 'Desserts', description: 'Warm chocolate cake with molten center', available: true },
+                'item4': { id: 'item4', name: 'Fresh Lime Soda', price: 89, category: 'Drinks', description: 'Refreshing lime soda with mint', available: true },
+                'item5': { id: 'item5', name: 'Pasta Alfredo', price: 249, category: 'Main Course', description: 'Creamy pasta with parmesan cheese', available: true },
+                'item6': { id: 'item6', name: 'Caesar Salad', price: 199, category: 'Starters', description: 'Fresh greens with caesar dressing', available: false }
+            };
             
-            appEl.innerHTML = `
-                <div class="card">
-                    <h2>Create an Account</h2>
-                    <form id="registerForm">
-                        <div class="form-group">
-                            <label for="registerName">Full Name</label>
-                            <input type="text" id="registerName" placeholder="Enter your full name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="registerEmail">Email</label>
-                            <input type="email" id="registerEmail" placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="registerPassword">Password</label>
-                            <input type="password" id="registerPassword" placeholder="Create a password (min. 6 characters)" required minlength="6">
-                        </div>
-                        <div class="form-group">
-                            <label for="registerPhone">Phone Number</label>
-                            <input type="tel" id="registerPhone" placeholder="Enter your phone number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="registerLocation">Location</label>
-                            <input type="text" id="registerLocation" placeholder="e.g. Mumbai, Maharashtra" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="registerPincode">Pincode</label>
-                            <input type="text" id="registerPincode" placeholder="e.g. 400001" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-user-plus"></i> Register
-                        </button>
-                    </form>
-                    <p style="text-align: center; margin-top: 20px;">
-                        Already have an account? <a href="#" onclick="navigate('login')">Login here</a>
-                    </p>
-                </div>
-            `;
-            
-            document.getElementById('registerForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const name = document.getElementById('registerName').value;
-                const email = document.getElementById('registerEmail').value;
-                const password = document.getElementById('registerPassword').value;
-                const phone = document.getElementById('registerPhone').value;
-                const location = document.getElementById('registerLocation').value;
-                const pincode = document.getElementById('registerPincode').value;
-                
-                // Firebase authentication
-                auth.createUserWithEmailAndPassword(email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        
-                        // Update user profile
-                        return user.updateProfile({
-                            displayName: name
-                        }).then(() => {
-                            // Save additional user data to Firestore
-                            return db.collection('users').doc(user.uid).set({
-                                name: name,
-                                email: email,
-                                phone: phone,
-                                location: location,
-                                pincode: pincode,
-                                categories: []
-                            });
-                        });
-                    })
-                    .then(() => {
-                        showNotification('Registration successful!');
-                        navigate('profile');
-                    })
-                    .catch((error) => {
-                        console.error("Registration error:", error);
-                        showNotification(error.message, true);
-                    });
+            // Save sample data to Firebase
+            Object.keys(sampleItems).forEach(itemId => {
+                saveMenuItemToFirebase(sampleItems[itemId]);
             });
-        }
-        
-        // Render jobs page
-        function renderJobs() {
-            if (!currentUser) {
-                navigate('login');
-                return;
-            }
             
-            appEl.innerHTML = `
-                <div class="card">
-                    <h2>Available Jobs</h2>
-                    <p>Browse and apply to available jobs in your area.</p>
-                    
-                    <div class="form-group">
-                        <input type="text" id="jobSearch" placeholder="Search for jobs...">
+            displayMenuItems();
+            updateCategoriesFromMenuItems();
+        }
+
+        // Save menu item to Firebase
+        function saveMenuItemToFirebase(item) {
+            const { database, ref, set } = window.firebase;
+            set(ref(database, 'menuItems/' + item.id), item);
+        }
+
+        // Save order to Firebase
+        function saveOrderToFirebase(order) {
+            const { database, ref, push, set } = window.firebase;
+            const newOrderRef = push(ref(database, 'orders'));
+            order.firebaseId = newOrderRef.key;
+            order.id = 'ORD' + Date.now();
+            order.restaurantId = restaurantId;
+            order.table = currentTable;
+            order.status = 'pending';
+            order.createdAt = new Date().toISOString();
+            set(newOrderRef, order);
+            return order.firebaseId;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Add swipe support for tabs
+            setupSwipeEvents();
+        }
+
+        // Setup swipe events for tab switching
+        function setupSwipeEvents() {
+            let startX = 0;
+            let endX = 0;
+            
+            document.addEventListener('touchstart', e => {
+                startX = e.changedTouches[0].screenX;
+            });
+            
+            document.addEventListener('touchend', e => {
+                endX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                const diff = startX - endX;
+                const minSwipe = 50; // Minimum swipe distance
+                
+                if (Math.abs(diff) > minSwipe) {
+                    if (diff > 0 && currentTab === 'orders') {
+                        // Swipe left on orders -> go to menu
+                        switchTab('menu');
+                        document.querySelector('.nav-item').click();
+                    } else if (diff < 0 && currentTab === 'menu') {
+                        // Swipe right on menu -> go to orders
+                        switchTab('orders');
+                        document.querySelectorAll('.nav-item')[1].click();
+                    }
+                }
+            }
+        }
+
+        // Extract categories from menu items
+        function updateCategoriesFromMenuItems() {
+            const nav = document.getElementById('categoriesNav');
+            const categories = new Set(['all']);
+            
+            // Get categories from menu items
+            Object.values(menuItems).forEach(item => {
+                if (item && item.category) {
+                    categories.add(item.category);
+                }
+            });
+            
+            const categoriesArray = Array.from(categories);
+            
+            nav.innerHTML = categoriesArray.map(category => `
+                <button class="category-btn ${category === currentCategory ? 'active' : ''}" 
+                        onclick="filterCategory('${category}')">
+                    <i class="fas ${category === 'all' ? 'fa-star' : 'fa-tag'}"></i> 
+                    ${category === 'all' ? 'All' : category}
+                </button>
+            `).join('');
+        }
+
+        // Display menu items
+        function displayMenuItems() {
+            const container = document.getElementById('menuGrid');
+            const itemsArray = Object.values(menuItems);
+            
+            const filteredItems = currentCategory === 'all' 
+                ? itemsArray 
+                : itemsArray.filter(item => item && item.category === currentCategory);
+
+            if (filteredItems.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>No ${currentCategory === 'all' ? '' : currentCategory + ' '}Items</h3>
+                        <p>No items available in this category</p>
                     </div>
-                </div>
-                
-                <div id="jobsContainer">
-                    <div class="loader"></div>
-                </div>
-            `;
-            
-            // Load jobs from Firestore
-            loadJobs();
-            
-            // Add search functionality
-            document.getElementById('jobSearch').addEventListener('input', function(e) {
-                filterJobs(e.target.value);
-            });
-        }
-        
-        // Load jobs from Firestore
-        function loadJobs() {
-            const jobsContainer = document.getElementById('jobsContainer');
-            
-            db.collection('jobs')
-                .where('status', '==', 'open')
-                .get()
-                .then((querySnapshot) => {
-                    allJobs = [];
-                    querySnapshot.forEach((doc) => {
-                        allJobs.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    displayJobs(allJobs);
-                    
-                    // Also load user applications
-                    loadUserApplications();
-                })
-                .catch((error) => {
-                    console.error("Error loading jobs:", error);
-                    jobsContainer.innerHTML = '<p>Error loading jobs. Please try again.</p>';
-                    showNotification('Error loading jobs', true);
-                });
-        }
-        
-        // Load user applications
-        function loadUserApplications() {
-            if (!currentUser) return;
-            
-            db.collection('applications')
-                .where('applicantId', '==', currentUser.id)
-                .get()
-                .then((querySnapshot) => {
-                    userApplications = [];
-                    querySnapshot.forEach((doc) => {
-                        userApplications.push({ id: doc.id, ...doc.data() });
-                    });
-                    
-                    // Update job display with application status
-                    displayJobs(allJobs);
-                })
-                .catch((error) => {
-                    console.error("Error loading applications:", error);
-                });
-        }
-        
-        // Display jobs in the UI
-        function displayJobs(jobs) {
-            const jobsContainer = document.getElementById('jobsContainer');
-            
-            if (jobs.length === 0) {
-                jobsContainer.innerHTML = '<p>No jobs available at the moment. Check back later!</p>';
+                `;
                 return;
             }
-            
-            jobsContainer.innerHTML = jobs.map(job => {
-                const hasApplied = userApplications.some(app => app.jobId === job.id);
+
+            container.innerHTML = Object.keys(menuItems).map(itemId => {
+                const item = menuItems[itemId];
+                if (!item || (currentCategory !== 'all' && item.category !== currentCategory)) return '';
+                
+                const cartItem = cart.find(ci => ci.id === itemId);
+                const quantity = cartItem ? cartItem.quantity : 0;
+                const isAvailable = item.available !== false;
+                const isInCart = quantity > 0;
                 
                 return `
-                    <div class="job-card">
-                        <div class="job-header">
-                            <div class="job-title">${job.title}</div>
-                            <div class="job-price">₹${job.price}</div>
+                    <div class="menu-item ${!isAvailable ? 'disabled' : ''}">
+                        <div class="menu-item-header">
+                            <div class="menu-item-name">${item.name || 'Unnamed Item'}</div>
+                            <div class="menu-item-price">₹${item.price || 0}</div>
                         </div>
-                        <div class="job-category">${job.category}</div>
-                        <div class="job-description">${job.description}</div>
-                        <div class="job-details">
-                            <div class="job-detail">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <span>${job.location}</span>
-                            </div>
-                            <div class="job-detail">
-                                <i class="fas fa-map-pin"></i>
-                                <span>${job.pincode}</span>
-                            </div>
+                        <div class="menu-item-category">
+                            <i class="fas fa-tag"></i>
+                            ${item.category || 'General'}
                         </div>
-                        <div class="job-footer">
-                            <div class="job-poster">
-                                <i class="fas fa-user"></i>
-                                <span>${job.posterName || job.posterEmail}</span>
-                            </div>
-                            <div class="job-actions">
-                                <button class="btn btn-secondary" onclick="callNumber('${job.posterPhone}')">
-                                    <i class="fas fa-phone"></i> Call
+                        <div class="menu-item-desc">${item.description || 'Delicious food item'}</div>
+                        ${isAvailable ? `
+                            <div class="menu-item-actions">
+                                <div class="quantity-controls">
+                                    <button class="quantity-btn" onclick="removeFromCart('${itemId}')">-</button>
+                                    <span class="quantity-display">${quantity}</span>
+                                    <button class="quantity-btn" onclick="addToCart('${itemId}')">+</button>
+                                </div>
+                                <button class="add-to-cart-btn ${isInCart ? 'added-to-cart' : ''}" onclick="addToCart('${itemId}')">
+                                    <i class="fas ${isInCart ? 'fa-check' : 'fa-plus'}"></i> ${isInCart ? 'Added' : 'Add'}
                                 </button>
-                                ${hasApplied ? 
-                                    `<button class="btn btn-success" disabled>
-                                        <i class="fas fa-check"></i> Applied
-                                    </button>` :
-                                    `<button class="btn btn-primary" onclick="applyForJob('${job.id}')">
-                                        <i class="fas fa-check"></i> Apply
-                                    </button>`
-                                }
+                            </div>
+                        ` : `
+                            <div style="color: var(--danger); text-align: center; padding: 8px;">
+                                <i class="fas fa-times-circle"></i> Out of Stock
+                            </div>
+                        `}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Filter by category
+        function filterCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            displayMenuItems();
+        }
+
+        // Cart functions
+        function addToCart(itemId) {
+            if (!hasTableBeenSet) {
+                document.getElementById('tableModal').style.display = 'flex';
+                showNotification('Please select a table first', 'error');
+                return;
+            }
+            
+            const item = menuItems[itemId];
+            if (!item) return;
+            
+            const existingItem = cart.find(ci => ci.id === itemId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: itemId,
+                    name: item.name,
+                    price: item.price,
+                    quantity: 1
+                });
+            }
+            updateCart();
+            displayMenuItems(); // Refresh to update button text
+            
+            // Haptic feedback for mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        function removeFromCart(itemId) {
+            const itemIndex = cart.findIndex(item => item.id === itemId);
+            if (itemIndex !== -1) {
+                if (cart[itemIndex].quantity > 1) {
+                    cart[itemIndex].quantity -= 1;
+                } else {
+                    cart.splice(itemIndex, 1);
+                }
+            }
+            updateCart();
+            displayMenuItems(); // Refresh to update button text
+            
+            // Haptic feedback for mobile
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
+        }
+
+        function updateCart() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+
+            const cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = `Total: ₹${cartTotal.toFixed(2)}`;
+            document.getElementById('checkoutBtn').disabled = cart.length === 0;
+
+            const cartItemsContainer = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Your cart is empty</h3>
+                        <p>Add some delicious items to get started</p>
+                    </div>
+                `;
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-price">₹${item.price} x ${item.quantity}</div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <button class="quantity-btn" onclick="removeFromCart('${item.id}')">-</button>
+                            <span class="quantity-display">${item.quantity}</span>
+                            <button class="quantity-btn" onclick="addToCart('${item.id}')">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('overlay');
+            cartSidebar.classList.toggle('open');
+            overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+            
+            // Prevent body scroll when cart is open
+            document.body.style.overflow = cartSidebar.classList.contains('open') ? 'hidden' : '';
+        }
+
+        // Place order
+        function placeOrder() {
+            if (cart.length === 0) return;
+            if (!hasTableBeenSet) {
+                showNotification('Please select a table first', 'error');
+                document.getElementById('tableModal').style.display = 'flex';
+                return;
+            }
+            
+            const order = {
+                id: 'ORD' + Date.now(),
+                table: currentTable,
+                restaurantId: restaurantId,
+                items: [...cart],
+                total: cart.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+                status: 'pending',
+                createdAt: new Date().toISOString()
+            };
+
+            // Save to Firebase
+            saveOrderToFirebase(order);
+            
+            // Show success message
+            cart = [];
+            updateCart();
+            toggleCart();
+            document.getElementById('orderSuccess').style.display = 'block';
+            document.getElementById('tab-menu').style.display = 'none';
+            
+            // Switch to orders tab
+            switchTab('orders');
+            document.querySelectorAll('.nav-item')[1].click();
+            
+            showNotification('Order placed successfully!', 'success');
+        }
+
+        function continueOrdering() {
+            document.getElementById('orderSuccess').style.display = 'none';
+            document.getElementById('tab-menu').style.display = 'block';
+            switchTab('menu');
+            document.querySelector('.nav-item').click();
+        }
+
+        // Update customer order status
+        function updateCustomerOrderStatus() {
+            const container = document.getElementById('orderTracking');
+            const myOrders = orders.filter(order => 
+                order.table === currentTable && order.status !== 'completed' && order.status !== 'cancelled'
+            );
+            
+            if (myOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">
+                            <i class="fas fa-receipt"></i>
+                        </div>
+                        <h3>No Active Orders</h3>
+                        <p>Your order status will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = myOrders.map(order => {
+                const statusText = {
+                    'pending': 'Order Received',
+                    'accepted': 'Order Accepted',
+                    'cooking': 'Cooking in Progress',
+                    'ready': 'Ready for Serving',
+                    'completed': 'Order Completed'
+                }[order.status] || order.status;
+                
+                const statusClass = `status-${order.status}`;
+                const elapsedTime = getElapsedTime(order.createdAt);
+                
+                return `
+                    <div class="order-card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h4 style="font-size: 16px;">Order #${order.id}</h4>
+                            <span class="order-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div style="color: var(--text-light); margin-bottom: 12px; font-size: 14px;">
+                            ${order.items.map(item => `${item.quantity}x ${item.name}`).join(', ')}
+                        </div>
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div style="font-weight: 600; color: var(--primary);">₹${order.total}</div>
+                            <div style="font-size: 12px; color: var(--text-light);">
+                                ${elapsedTime}
                             </div>
                         </div>
                     </div>
                 `;
             }).join('');
         }
-        
-        // Filter jobs based on search query
-        function filterJobs(query) {
-            if (!query) {
-                displayJobs(allJobs);
-                return;
-            }
+
+        // Calculate elapsed time
+        function getElapsedTime(createdAt) {
+            const created = new Date(createdAt);
+            const now = new Date();
+            const diffMs = now - created;
+            const diffMins = Math.floor(diffMs / 60000);
+            const diffHours = Math.floor(diffMins / 60);
             
-            const filteredJobs = allJobs.filter(job => 
-                job.title.toLowerCase().includes(query.toLowerCase()) ||
-                job.description.toLowerCase().includes(query.toLowerCase()) ||
-                job.category.toLowerCase().includes(query.toLowerCase()) ||
-                job.location.toLowerCase().includes(query.toLowerCase())
-            );
-            
-            displayJobs(filteredJobs);
-        }
-        
-        // Apply for a job
-        function applyForJob(jobId) {
-            if (!currentUser) {
-                navigate('login');
-                return;
-            }
-            
-            const job = allJobs.find(j => j.id === jobId);
-            if (!job) return;
-            
-            // Create application record
-            db.collection('applications').add({
-                jobId: jobId,
-                jobTitle: job.title,
-                applicantId: currentUser.id,
-                applicantName: currentUser.name,
-                applicantEmail: currentUser.email,
-                applicantPhone: currentUser.phone,
-                status: 'pending',
-                appliedAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                showNotification('Application submitted successfully!');
-                loadUserApplications(); // Refresh applications
-            })
-            .catch((error) => {
-                console.error("Error applying for job:", error);
-                showNotification('Error applying for job', true);
-            });
-        }
-        
-        // Call phone number
-        function callNumber(phone) {
-            window.open(`tel:${phone}`);
-        }
-        
-        // Render post job page
-        function renderPostJob() {
-            if (!currentUser) {
-                navigate('login');
-                return;
-            }
-            
-            appEl.innerHTML = `
-                <div class="card">
-                    <h2>Post a New Job</h2>
-                    <p>Fill out the form below to post a new job opportunity.</p>
-                    
-                    <form id="postJobForm">
-                        <div class="form-group">
-                            <label for="jobCategory">Job Category</label>
-                            <select id="jobCategory" required>
-                                <option value="">Select a category</option>
-                                ${CATEGORIES.map(cat => `<option value="${cat}">${cat}</option>`).join('')}
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="jobTitle">Job Title</label>
-                            <input type="text" id="jobTitle" placeholder="e.g. House Painting" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="jobDescription">Description</label>
-                            <textarea id="jobDescription" rows="4" placeholder="Describe the job in detail" required></textarea>
-                        </div>
-                        
-                        <div class="grid grid-2">
-                            <div class="form-group">
-                                <label for="jobPrice">Price (₹)</label>
-                                <input type="number" id="jobPrice" placeholder="e.g. 2500" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="jobLocation">Location</label>
-                                <input type="text" id="jobLocation" placeholder="e.g. Mumbai, Maharashtra" required>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-2">
-                            <div class="form-group">
-                                <label for="jobPincode">Pincode</label>
-                                <input type="text" id="jobPincode" placeholder="e.g. 400001" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="posterPhone">Your Phone Number</label>
-                                <input type="tel" id="posterPhone" value="${currentUser.phone}" placeholder="e.g. +91 9876543210" required>
-                            </div>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-block">
-                            <i class="fas fa-paper-plane"></i> Post Job
-                        </button>
-                    </form>
-                </div>
-            `;
-            
-            document.getElementById('postJobForm').addEventListener('submit', function(e) {
-                e.preventDefault();
-                const category = document.getElementById('jobCategory').value;
-                const title = document.getElementById('jobTitle').value;
-                const description = document.getElementById('jobDescription').value;
-                const price = document.getElementById('jobPrice').value;
-                const location = document.getElementById('jobLocation').value;
-                const pincode = document.getElementById('jobPincode').value;
-                const phone = document.getElementById('posterPhone').value;
-                
-                // Save job to Firestore
-                db.collection('jobs').add({
-                    category: category,
-                    title: title,
-                    description: description,
-                    price: price,
-                    location: location,
-                    pincode: pincode,
-                    posterId: currentUser.id,
-                    posterName: currentUser.name,
-                    posterEmail: currentUser.email,
-                    posterPhone: phone,
-                    status: 'open',
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                })
-                .then(() => {
-                    showNotification('Job posted successfully!');
-                    navigate('jobs');
-                })
-                .catch((error) => {
-                    console.error("Error posting job:", error);
-                    showNotification('Error posting job', true);
-                });
-            });
-        }
-        
-        // Render profile page
-        function renderProfile() {
-            if (!currentUser) {
-                navigate('login');
-                return;
-            }
-            
-            appEl.innerHTML = `
-                <div class="card">
-                    <h2>Profile Information</h2>
-                    
-                    <div class="profile-info">
-                        <div class="profile-info-item">
-                            <span class="info-label">Name:</span>
-                            <span class="info-value">${currentUser.name}</span>
-                        </div>
-                        <div class="profile-info-item">
-                            <span class="info-label">Email:</span>
-                            <span class="info-value">${currentUser.email}</span>
-                        </div>
-                        <div class="profile-info-item">
-                            <span class="info-label">Phone:</span>
-                            <span class="info-value">${currentUser.phone}</span>
-                        </div>
-                        <div class="profile-info-item">
-                            <span class="info-label">Location:</span>
-                            <span class="info-value">${currentUser.location}</span>
-                        </div>
-                        <div class="profile-info-item">
-                            <span class="info-label">Pincode:</span>
-                            <span class="info-value">${currentUser.pincode}</span>
-                        </div>
-                    </div>
-                    
-                    <h3>Your Skills/Categories</h3>
-                    <p>Select the categories that match your skills:</p>
-                    
-                    <div class="category-grid" id="categoriesContainer">
-                        ${CATEGORIES.map(category => `
-                            <div class="category-item ${currentUser.categories && currentUser.categories.includes(category) ? 'selected' : ''}">
-                                <i class="fas fa-wrench"></i>
-                                <span>${category}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    
-                    <div style="margin-top: 20px;">
-                        <button class="btn btn-primary" onclick="saveProfile()">
-                            <i class="fas fa-save"></i> Save Profile
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h3>Your Job Applications</h3>
-                    <div id="applicationsContainer">
-                        <div class="loader"></div>
-                    </div>
-                </div>
-            `;
-            
-            // Load user applications
-            loadProfileApplications();
-            
-            // Add event listeners to category items
-            setTimeout(() => {
-                const categoryItems = document.querySelectorAll('.category-item');
-                categoryItems.forEach(item => {
-                    item.addEventListener('click', function() {
-                        const category = this.querySelector('span').textContent;
-                        toggleCategory(category);
-                    });
-                });
-            }, 100);
-        }
-        
-        // Toggle category selection
-        function toggleCategory(category) {
-            if (!currentUser.categories) {
-                currentUser.categories = [];
-            }
-            
-            const index = currentUser.categories.indexOf(category);
-            
-            if (index > -1) {
-                currentUser.categories.splice(index, 1);
+            if (diffHours > 0) {
+                return `${diffHours}h ${diffMins % 60}m ago`;
+            } else if (diffMins > 0) {
+                return `${diffMins}m ago`;
             } else {
-                currentUser.categories.push(category);
+                return 'Just now';
             }
+        }
+
+        // Update order status badge in header
+        function updateOrderStatusBadge() {
+            const badge = document.getElementById('orderStatusBadge');
+            const statusText = document.getElementById('currentOrderStatusText');
             
-            // Update UI
-            const categoryElement = Array.from(document.querySelectorAll('.category-item')).find(
-                el => el.querySelector('span').textContent === category
+            const myActiveOrders = orders.filter(order => 
+                order.table === currentTable && order.status !== 'completed' && order.status !== 'cancelled'
             );
             
-            if (categoryElement) {
-                categoryElement.classList.toggle('selected');
-            }
-        }
-        
-        // Save profile to Firestore
-        function saveProfile() {
-            db.collection('users').doc(currentUser.id).set({
-                name: currentUser.name,
-                email: currentUser.email,
-                phone: currentUser.phone,
-                location: currentUser.location,
-                pincode: currentUser.pincode,
-                categories: currentUser.categories || []
-            }, { merge: true })
-            .then(() => {
-                showNotification('Profile saved successfully!');
-            })
-            .catch((error) => {
-                console.error("Error saving profile:", error);
-                showNotification('Error saving profile', true);
-            });
-        }
-        
-        // Load applications for profile page
-        function loadProfileApplications() {
-            const applicationsContainer = document.getElementById('applicationsContainer');
-            
-            if (!currentUser) {
-                applicationsContainer.innerHTML = '<p>Please log in to view your applications.</p>';
+            if (myActiveOrders.length === 0) {
+                badge.style.display = 'none';
                 return;
             }
             
-            db.collection('applications')
-                .where('applicantId', '==', currentUser.id)
-                .orderBy('appliedAt', 'desc')
-                .get()
-                .then((querySnapshot) => {
-                    if (querySnapshot.empty) {
-                        applicationsContainer.innerHTML = '<p>You haven\'t applied to any jobs yet.</p>';
-                        return;
-                    }
-                    
-                    applicationsContainer.innerHTML = '';
-                    querySnapshot.forEach((doc) => {
-                        const application = { id: doc.id, ...doc.data() };
-                        
-                        const applicationElement = document.createElement('div');
-                        applicationElement.className = 'application-card';
-                        applicationElement.innerHTML = `
-                            <div class="application-header">
-                                <div class="application-title">${application.jobTitle}</div>
-                                <div class="application-status status-${application.status}">${application.status}</div>
-                            </div>
-                            <div class="job-details">
-                                <div class="job-detail">
-                                    <i class="fas fa-calendar"></i>
-                                    <span>Applied on: ${application.appliedAt ? application.appliedAt.toDate().toLocaleDateString() : 'N/A'}</span>
-                                </div>
-                            </div>
-                            ${application.status === 'accepted' ? `
-                                <div style="margin-top: 15px;">
-                                    <button class="btn btn-success" onclick="completeJob('${application.id}', '${application.jobId}')">
-                                        <i class="fas fa-check-circle"></i> Mark as Completed
-                                    </button>
-                                </div>
-                            ` : ''}
-                        `;
-                        
-                        applicationsContainer.appendChild(applicationElement);
-                    });
-                })
-                .catch((error) => {
-                    console.error("Error loading applications:", error);
-                    applicationsContainer.innerHTML = '<p>Error loading applications. Please try again.</p>';
-                });
+            badge.style.display = 'flex';
+            
+            // Get the most recent order
+            const latestOrder = myActiveOrders.reduce((latest, order) => {
+                return new Date(order.createdAt) > new Date(latest.createdAt) ? order : latest;
+            }, myActiveOrders[0]);
+            
+            const statusMap = {
+                'pending': { text: 'Order Received', icon: 'fa-clock', color: '#d97706' },
+                'accepted': { text: 'Order Accepted', icon: 'fa-check', color: '#2563eb' },
+                'cooking': { text: 'Cooking', icon: 'fa-fire', color: '#d97706' },
+                'ready': { text: 'Ready to Serve', icon: 'fa-check-circle', color: '#065f46' }
+            };
+            
+            const statusInfo = statusMap[latestOrder.status] || { text: latestOrder.status, icon: 'fa-clock', color: '#64748b' };
+            
+            statusText.textContent = statusInfo.text;
+            badge.innerHTML = `<i class="fas ${statusInfo.icon}"></i> <span id="currentOrderStatusText">${statusInfo.text}</span>`;
+            badge.style.background = `rgba(255,255,255,0.9)`;
+            badge.style.color = statusInfo.color;
         }
-        
-        // Complete a job (mark as done)
-        function completeJob(applicationId, jobId) {
-            // Update application status to completed
-            db.collection('applications').doc(applicationId).update({
-                status: 'completed',
-                completedAt: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then(() => {
-                // Update job status to closed
-                return db.collection('jobs').doc(jobId).update({
-                    status: 'closed'
-                });
-            })
-            .then(() => {
-                showNotification('Job marked as completed!');
-                loadProfileApplications(); // Refresh the applications list
-            })
-            .catch((error) => {
-                console.error("Error completing job:", error);
-                showNotification('Error completing job', true);
-            });
-        }
-        
+
         // Show notification
-        function showNotification(message, isError = false) {
-            const notification = document.getElementById('notification');
-            notification.querySelector('.notification-content').textContent = message;
+        function showNotification(message, type) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: ${type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : '#6366f1'};
+                color: white;
+                padding: 12px 20px;
+                border-radius: 10px;
+                box-shadow: var(--shadow-lg);
+                z-index: 3000;
+                animation: slideInDown 0.3s ease;
+                max-width: 90%;
+                text-align: center;
+                font-weight: 600;
+            `;
+            notification.textContent = message;
             
-            if (isError) {
-                notification.classList.add('error');
-            } else {
-                notification.classList.remove('error');
-            }
+            document.body.appendChild(notification);
             
-            notification.classList.add('show');
-            
+            // Remove after 3 seconds
             setTimeout(() => {
-                notification.classList.remove('show');
+                notification.style.animation = 'slideOutUp 0.3s ease';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        document.body.removeChild(notification);
+                    }
+                }, 300);
             }, 3000);
         }
-        
-        // Navigate to a page
-        function navigate(page) {
-            window.location.hash = page;
-        }
-        
-        // Logout
-        function logout() {
-            auth.signOut()
-                .then(() => {
-                    showNotification('Logged out successfully');
-                    navigate('home');
-                })
-                .catch((error) => {
-                    console.error("Logout error:", error);
-                    showNotification('Error logging out', true);
-                });
-        }
-        
-        // Initialize the app
-        initApp();
+
+        // Add CSS for notifications
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInDown {
+                from { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            @keyframes slideOutUp {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(-100%); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
